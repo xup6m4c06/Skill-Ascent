@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, Clock, StickyNote } from "lucide-react";
+import { CalendarIcon, Clock, StickyNote, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -30,12 +31,13 @@ const formSchema = z.object({
 export type LogPracticeFormValues = z.infer<typeof formSchema>;
 
 interface LogPracticeFormProps {
-  onSubmit: (values: LogPracticeFormValues) => void;
+  onSubmit: (values: LogPracticeFormValues) => Promise<void> | void;
   defaultValues?: Partial<LogPracticeFormValues>;
   isEditing?: boolean;
+  isSubmitting?: boolean;
 }
 
-export function LogPracticeForm({ onSubmit, defaultValues, isEditing = false }: LogPracticeFormProps) {
+export function LogPracticeForm({ onSubmit, defaultValues, isEditing = false, isSubmitting = false }: LogPracticeFormProps) {
   const form = useForm<LogPracticeFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues || {
@@ -44,6 +46,9 @@ export function LogPracticeForm({ onSubmit, defaultValues, isEditing = false }: 
       notes: "",
     },
   });
+
+  // Reset form if defaultValues change (e.g. for new entry after editing)
+  // This is handled by `key` prop on the component instance in parent.
 
   return (
     <Form {...form}>
@@ -63,6 +68,7 @@ export function LogPracticeForm({ onSubmit, defaultValues, isEditing = false }: 
                         "w-full pl-3 text-left font-normal",
                         !field.value && "text-muted-foreground"
                       )}
+                      disabled={isSubmitting}
                     >
                       {field.value ? (
                         format(field.value, "PPP")
@@ -79,7 +85,7 @@ export function LogPracticeForm({ onSubmit, defaultValues, isEditing = false }: 
                     selected={field.value}
                     onSelect={field.onChange}
                     disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
+                      date > new Date() || date < new Date("1900-01-01") || isSubmitting
                     }
                     initialFocus
                   />
@@ -96,7 +102,7 @@ export function LogPracticeForm({ onSubmit, defaultValues, isEditing = false }: 
             <FormItem>
               <FormLabel className="flex items-center gap-1"><Clock size={16}/> Duration (minutes)</FormLabel>
               <FormControl>
-                <Input type="number" placeholder="e.g., 60" {...field} />
+                <Input type="number" placeholder="e.g., 60" {...field} disabled={isSubmitting} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -109,13 +115,14 @@ export function LogPracticeForm({ onSubmit, defaultValues, isEditing = false }: 
             <FormItem>
               <FormLabel className="flex items-center gap-1"><StickyNote size={16}/> Notes (Optional)</FormLabel>
               <FormControl>
-                <Textarea placeholder="e.g., Worked on chapter 3, practiced scales." {...field} rows={3}/>
+                <Textarea placeholder="e.g., Worked on chapter 3, practiced scales." {...field} rows={3} disabled={isSubmitting}/>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? <Loader2 className="animate-spin mr-2" /> : null}
           {isEditing ? "Update Log" : "Log Practice"}
         </Button>
       </form>

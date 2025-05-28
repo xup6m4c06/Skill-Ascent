@@ -8,19 +8,24 @@ import { useBadges } from "@/lib/hooks/useBadges";
 import { SkillCard } from "@/components/SkillCard";
 import { BadgeDisplay } from "@/components/BadgeDisplay";
 import Link from "next/link";
-import { PlusCircle, TrendingUp, Award, LogIn, BookOpen } from "lucide-react";
+import { PlusCircle, TrendingUp, Award, LogIn, BookOpen, Loader2 } from "lucide-react";
 import { formatDuration, getTotalPracticeTime } from "@/lib/helpers";
 import { useAuth } from "@/hooks/useAuth";
 import { AppLogo } from "@/components/AppLogo";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
-  const { skills } = useSkills(); // Still uses localStorage for now
-  const { badges } = useBadges(skills); // Still uses localStorage for now
+  const { skills, loading: skillsLoading, error: skillsError } = useSkills();
+  const { badges, loading: badgesLoading, error: badgesError } = useBadges({ skills, skillsLoading });
 
-  if (authLoading) {
-    // Or a more sophisticated skeleton loader
-    return <div className="text-center py-10">Loading dashboard...</div>;
+  if (authLoading || (user && (skillsLoading || badgesLoading))) {
+    return (
+      <div className="flex justify-center items-center h-[calc(100vh-10rem)]">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        <p className="ml-4 text-muted-foreground">Loading dashboard...</p>
+      </div>
+    );
   }
 
   if (!user) {
@@ -40,6 +45,19 @@ export default function DashboardPage() {
           </Link>
         </Button>
       </div>
+    );
+  }
+  
+  if (skillsError || badgesError) {
+    return (
+      <Alert variant="destructive" className="max-w-2xl mx-auto">
+        <AlertTitle>Error Loading Dashboard</AlertTitle>
+        <AlertDescription>
+          There was a problem loading your dashboard data. Please try refreshing the page.
+          {skillsError && <p>Skills error: {skillsError}</p>}
+          {badgesError && <p>Badges error: {badgesError}</p>}
+        </AlertDescription>
+      </Alert>
     );
   }
 
@@ -116,9 +134,6 @@ export default function DashboardPage() {
       
       <section>
         <h2 className="text-2xl font-semibold mb-4 text-primary">Your Skills</h2>
-         <p className="text-sm text-muted-foreground mb-4">
-           Note: Skill data is currently stored locally in your browser. Cloud storage for your skills is coming soon!
-        </p>
         {skills.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {skills.map(skill => (

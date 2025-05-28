@@ -1,16 +1,61 @@
+
 'use client';
 
 import { useSkills } from '@/lib/hooks/useSkills';
 import { useBadges } from '@/lib/hooks/useBadges';
 import { BadgeDisplay } from '@/components/BadgeDisplay';
 import { Card, CardContent } from '@/components/ui/card';
-import { Award, CheckCircle, Circle } from 'lucide-react';
-import { useState } from 'react';
+import { Award, CheckCircle, Circle, Loader2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import Link from 'next/link';
 
 export default function AchievementsPage() {
-  const { skills } = useSkills(); // Skills are needed to calculate badge achievement status
-  const { badges } = useBadges(skills);
+  const { user, loading: authLoading } = useAuth();
+  const { skills, loading: skillsLoading, error: skillsError } = useSkills();
+  const { badges, loading: badgesLoading, error: badgesError } = useBadges({ skills, skillsLoading });
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/login?redirect=/achievements');
+    }
+  }, [user, authLoading, router]);
+
+  const isLoading = authLoading || (user && (skillsLoading || badgesLoading));
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[calc(100vh-10rem)]">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        <p className="ml-4 text-muted-foreground">Loading achievements...</p>
+      </div>
+    );
+  }
+
+  if (!user && !authLoading) {
+    return (
+      <div className="text-center py-10">
+        <p>Please <Link href="/login?redirect=/achievements" className="underline">log in</Link> to view your achievements.</p>
+      </div>
+    );
+  }
+
+  if (skillsError || badgesError) {
+    return (
+      <Alert variant="destructive" className="max-w-2xl mx-auto">
+        <AlertTitle>Error Loading Achievements</AlertTitle>
+        <AlertDescription>
+          There was a problem loading your achievements data. Please try refreshing the page.
+          {skillsError && <p>Skills error: {skillsError}</p>}
+          {badgesError && <p>Badges error: {badgesError}</p>}
+        </AlertDescription>
+      </Alert>
+    );
+  }
 
   const achievedBadges = badges.filter(b => b.achievedAt);
   const unachievedBadges = badges.filter(b => !b.achievedAt);
@@ -42,6 +87,7 @@ export default function AchievementsPage() {
               <CardContent className="p-10 text-center text-muted-foreground">
                 <Award size={48} className="mx-auto mb-4" />
                 <p className="text-lg">No badges available at the moment.</p>
+                 {badgesLoading && <p className="text-sm">Still loading badge definitions...</p>}
               </CardContent>
             </Card>
           )}
@@ -73,13 +119,22 @@ export default function AchievementsPage() {
               ))}
             </div>
           ) : (
-            <Card className="rounded-lg">
-               <CardContent className="p-10 text-center text-muted-foreground">
-                <Circle size={48} className="mx-auto mb-4 text-primary" />
-                <p className="text-lg">Congratulations!</p>
-                <p className="text-sm">You've earned all available badges!</p>
-              </CardContent>
-            </Card>
+             badges.length > 0 && unachievedBadges.length === 0 ? ( // Only show "all earned" if badges HAVE loaded
+              <Card className="rounded-lg">
+                 <CardContent className="p-10 text-center text-muted-foreground">
+                  <Circle size={48} className="mx-auto mb-4 text-primary" />
+                  <p className="text-lg">Congratulations!</p>
+                  <p className="text-sm">You've earned all available badges!</p>
+                </CardContent>
+              </Card>
+            ) : ( // Default empty state for "To Earn" if badges haven't loaded or none exist
+              <Card className="rounded-lg">
+                <CardContent className="p-10 text-center text-muted-foreground">
+                  <Award size={48} className="mx-auto mb-4" />
+                  <p className="text-lg">No badges left to earn or still loading.</p>
+                </CardContent>
+              </Card>
+            )
           )}
         </TabsContent>
       </Tabs>

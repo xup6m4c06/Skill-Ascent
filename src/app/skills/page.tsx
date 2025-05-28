@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -5,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Progress } from "@/components/ui/progress";
 import { useSkills } from "@/lib/hooks/useSkills";
 import Link from "next/link";
-import { PlusCircle, Edit3, Trash2, BookOpen, Target, Clock } from "lucide-react";
+import { PlusCircle, Edit3, Trash2, BookOpen, Target, Clock, Loader2 } from "lucide-react";
 import { formatDuration, getTotalPracticeTime, calculateProgress } from "@/lib/helpers";
 import {
   AlertDialog,
@@ -19,19 +20,68 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function SkillsPage() {
-  const { skills, deleteSkill } = useSkills();
+  const { user, loading: authLoading } = useAuth();
+  const { skills, deleteSkill, loading: skillsLoading, error: skillsError } = useSkills();
   const { toast } = useToast();
+  const router = useRouter();
 
-  const handleDeleteSkill = (skillId: string, skillName: string) => {
-    deleteSkill(skillId);
-    toast({
-      title: "Skill Deleted",
-      description: `"${skillName}" has been removed.`,
-      variant: "destructive",
-    });
+   useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/login?redirect=/skills');
+    }
+  }, [user, authLoading, router]);
+
+  const handleDeleteSkill = async (skillId: string, skillName: string) => {
+    try {
+      await deleteSkill(skillId);
+      toast({
+        title: "Skill Deleted",
+        description: `"${skillName}" has been removed.`,
+        variant: "destructive",
+      });
+    } catch (error) {
+       toast({
+        title: "Error Deleting Skill",
+        description: `Could not delete "${skillName}". Please try again.`,
+        variant: "destructive",
+      });
+    }
   };
+  
+  if (authLoading || (user && skillsLoading)) {
+     return (
+      <div className="flex justify-center items-center h-[calc(100vh-10rem)]">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+         <p className="ml-4 text-muted-foreground">Loading skills...</p>
+      </div>
+    );
+  }
+
+  if (!user && !authLoading) {
+     // This case should be handled by the useEffect redirect, but as a fallback:
+    return (
+      <div className="text-center py-10">
+        <p>Please <Link href="/login?redirect=/skills" className="underline">log in</Link> to manage your skills.</p>
+      </div>
+    );
+  }
+  
+  if (skillsError) {
+    return (
+      <Alert variant="destructive" className="max-w-2xl mx-auto">
+        <AlertTitle>Error Loading Skills</AlertTitle>
+        <AlertDescription>
+          There was a problem loading your skills data: {skillsError}
+        </AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -46,7 +96,7 @@ export default function SkillsPage() {
         </Button>
       </div>
 
-      {skills.length > 0 ? (
+      {skills && skills.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {skills.map((skill) => {
             const totalTime = getTotalPracticeTime(skill);

@@ -1,8 +1,9 @@
+
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
 import { useSkills } from '@/lib/hooks/useSkills';
-import { useBadges } from '@/lib/hooks/useBadges';
+import { useBadges } from '@/lib/hooks/useBadges'; // Pass skills and loading state
 import { AddSkillForm, type AddSkillFormValues } from '@/components/forms/AddSkillForm';
 import { LogPracticeForm, type LogPracticeFormValues } from '@/components/forms/LogPracticeForm';
 import { PersonalizedLearningPlan } from '@/components/PersonalizedLearningPlan';
@@ -10,14 +11,13 @@ import { BadgeDisplay } from '@/components/BadgeDisplay';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from '@/hooks/use-toast';
 import { formatDuration, getTotalPracticeTime, calculateProgress, getSkillProgressLevel } from '@/lib/helpers';
-import { ArrowLeft, Edit3, Trash2, CalendarDays, Clock, StickyNote, PlusCircle, BookOpen, Target, Brain, Award, BarChartHorizontalBig } from 'lucide-react';
+import { ArrowLeft, Edit3, Trash2, CalendarDays, Clock, StickyNote, PlusCircle, BookOpen, Target, Brain, Award, BarChartHorizontalBig, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import type { PracticeEntry } from '@/types';
+import { useEffect, useState, useMemo } from 'react';
+import type { PracticeEntry, Skill } from '@/types';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,25 +29,79 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useAuth } from '@/hooks/useAuth';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
 
 export default function SkillDetailPage() {
   const router = useRouter();
   const params = useParams();
   const skillId = params.skillId as string;
   
-  const { skills, getSkillById, updateSkill, addPracticeEntry, deletePracticeEntry, updatePracticeEntry } = useSkills();
-  const { badges } = useBadges(skills);
+  const { user, loading: authLoading } = useAuth();
+  const { 
+    skills, 
+    getSkillById, 
+    updateSkill, 
+    addPracticeEntry, 
+    deletePracticeEntry, 
+    updatePracticeEntry,
+    loading: skillsHookLoading, // Renamed to avoid conflict
+    error: skillsError 
+  } = useSkills();
+  
+  // Memoize skill to prevent re-renders if skills array reference changes but content for this skillId doesn't
+  const skill = useMemo(() => getSkillById(skillId), [skillId, skills, getSkillById]);
+
+  const { badges, loading: badgesLoading, error: badgesError } = useBadges({ skills, skillsLoading: skillsHookLoading });
   const { toast } = useToast();
 
-  const [skill, setSkill] = useState(getSkillById(skillId));
   const [isEditingSkill, setIsEditingSkill] = useState(false);
   const [editingLogEntry, setEditingLogEntry] = useState<PracticeEntry | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   useEffect(() => {
-    setSkill(getSkillById(skillId));
-  }, [skillId, skills, getSkillById]);
+    if (!authLoading && !user) {
+      router.push(`/login?redirect=/skills/${skillId}`);
+    }
+  }, [user, authLoading, router, skillId]);
 
-  if (!skill) {
+
+  const isLoading = authLoading || skillsHookLoading || (user && !skill && skillsHookLoading); // skill might be undefined during initial load
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[calc(100vh-10rem)]">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        <p className="ml-4 text-muted-foreground">Loading skill details...</p>
+      </div>
+    );
+  }
+
+  if (!user && !authLoading) {
+     return (
+      <div className="text-center py-10">
+        <p>Please <Link href={`/login?redirect=/skills/${skillId}`} className="underline">log in</Link> to view this skill.</p>
+      </div>
+    );
+  }
+  
+  if (skillsError) {
+     return (
+      <Alert variant="destructive" className="max-w-2xl mx-auto">
+        <AlertTitle>Error Loading Skill</AlertTitle>
+        <AlertDescription>
+          There was a problem loading skill data: {skillsError}
+           <Button asChild variant="outline" className="mt-4 ml-auto block">
+            <Link href="/skills"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Skills</Link>
+          </Button>
+        </AlertDescription>
+      </Alert>
+    );
+  }
+  
+  if (!skill && !skillsHookLoading) { // Ensure not to show "not found" while still loading
     return (
       <div className="text-center py-10">
         <h2 className="text-2xl font-semibold text-destructive">Skill not found</h2>
@@ -58,36 +112,71 @@ export default function SkillDetailPage() {
       </div>
     );
   }
+  
+  // This check is only valid if skill is loaded
+  if (!skill) return null; // Should be covered by loading or error state, but as a safeguard
+
 
   const totalTime = getTotalPracticeTime(skill);
   const progressPercentage = calculateProgress(totalTime, skill.targetPracticeTime);
   const progressLevel = getSkillProgressLevel(totalTime);
 
-  const handleUpdateSkill = (values: AddSkillFormValues) => {
-    updateSkill(skillId, values);
-    toast({ title: "Skill Updated", description: `"${values.name}" has been updated.` });
-    setIsEditingSkill(false);
+  const handleUpdateSkill = async (values: AddSkillFormValues) => {
+    setIsSubmitting(true);
+    try {
+      await updateSkill(skillId, values);
+      toast({ title: "Skill Updated", description: `"${values.name}" has been updated.` });
+      setIsEditingSkill(false);
+    } catch (e) {
+      toast({ title: "Error updating skill", description: (e as Error).message || "Could not update skill.", variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleLogPractice = (values: LogPracticeFormValues) => {
-    if(editingLogEntry) {
-      updatePracticeEntry(skillId, editingLogEntry.id, { ...values, date: values.date.toISOString() });
-      toast({ title: "Practice Log Updated", description: `Log entry for ${new Date(values.date).toLocaleDateString()} updated.`});
-      setEditingLogEntry(null);
-    } else {
-      addPracticeEntry(skillId, { ...values, date: values.date.toISOString() });
-      toast({ title: "Practice Logged!", description: `${formatDuration(values.duration)} for "${skill.name}" logged.` });
+  const handleLogPractice = async (values: LogPracticeFormValues) => {
+    setIsSubmitting(true);
+    try {
+      if(editingLogEntry) {
+        await updatePracticeEntry(skillId, editingLogEntry.id, { ...values, date: values.date.toISOString() });
+        toast({ title: "Practice Log Updated", description: `Log entry for ${new Date(values.date).toLocaleDateString()} updated.`});
+        setEditingLogEntry(null);
+      } else {
+        await addPracticeEntry(skillId, { ...values, date: values.date.toISOString() });
+        toast({ title: "Practice Logged!", description: `${formatDuration(values.duration)} for "${skill.name}" logged.` });
+      }
+    } catch (e) {
+      toast({ title: "Error logging practice", description: (e as Error).message || "Could not log practice.", variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
+      // Reset form if it's a new entry (by key change or explicit reset if using react-hook-form's reset)
     }
   };
   
-  const handleDeleteLogEntry = (entryId: string) => {
-    deletePracticeEntry(skillId, entryId);
-    toast({ title: "Log Entry Deleted", description: "The practice log entry has been removed.", variant: "destructive" });
+  const handleDeleteLogEntry = async (entryId: string) => {
+    setIsSubmitting(true);
+    try {
+      await deletePracticeEntry(skillId, entryId);
+      toast({ title: "Log Entry Deleted", description: "The practice log entry has been removed.", variant: "destructive" });
+    } catch (e) {
+      toast({ title: "Error deleting log", description: (e as Error).message || "Could not delete log entry.", variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleUpdateLearningGoals = (goals: string) => {
-    updateSkill(skillId, { learningGoals: goals });
-    // Toast is optional here as it's part of AI feature interaction
+  const handleUpdateLearningGoals = async (goals: string) => {
+    // This function is called onBlur from PersonalizedLearningPlan's textarea
+    // We only want to save if the goal actually changed from what's in the skill object
+    if (skill.learningGoals !== goals) {
+        try {
+            await updateSkill(skillId, { learningGoals: goals });
+            // Optionally, provide a subtle toast for this auto-save like action
+            // toast({ title: "Learning goals updated", duration: 2000 });
+        } catch (e) {
+            toast({ title: "Error updating goals", description: (e as Error).message || "Could not save learning goals.", variant: "destructive" });
+        }
+    }
   };
 
   const skillSpecificBadges = badges.filter(b => b.skillId === skillId && b.achievedAt);
@@ -103,6 +192,7 @@ export default function SkillDetailPage() {
           onSubmit={handleUpdateSkill} 
           defaultValues={{ name: skill.name, targetPracticeTime: skill.targetPracticeTime, learningGoals: skill.learningGoals }} 
           isEditing 
+          isSubmitting={isSubmitting}
         />
       ) : (
         <Card className="shadow-xl rounded-lg overflow-hidden">
@@ -111,7 +201,7 @@ export default function SkillDetailPage() {
               <CardTitle className="text-3xl font-bold text-primary flex items-center gap-3">
                 <BookOpen size={32} className="text-accent"/> {skill.name}
               </CardTitle>
-              <Button variant="outline" size="sm" onClick={() => setIsEditingSkill(true)}>
+              <Button variant="outline" size="sm" onClick={() => setIsEditingSkill(true)} disabled={isSubmitting}>
                 <Edit3 className="mr-2 h-4 w-4" /> Edit Skill Details
               </Button>
             </div>
@@ -167,7 +257,7 @@ export default function SkillDetailPage() {
             </CardHeader>
             <CardContent>
               <LogPracticeForm 
-                key={editingLogEntry ? editingLogEntry.id : 'new'} // Re-mount form when editingLogEntry changes
+                key={editingLogEntry ? editingLogEntry.id : 'new'}
                 onSubmit={handleLogPractice}
                 defaultValues={editingLogEntry ? {
                   date: new Date(editingLogEntry.date),
@@ -175,9 +265,10 @@ export default function SkillDetailPage() {
                   notes: editingLogEntry.notes
                 } : { date: new Date() }}
                 isEditing={!!editingLogEntry}
+                isSubmitting={isSubmitting}
               />
               {editingLogEntry && (
-                <Button variant="outline" size="sm" className="w-full mt-4" onClick={() => setEditingLogEntry(null)}>
+                <Button variant="outline" size="sm" className="w-full mt-4" onClick={() => setEditingLogEntry(null)} disabled={isSubmitting}>
                   Cancel Edit
                 </Button>
               )}
@@ -197,7 +288,7 @@ export default function SkillDetailPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {skill.practiceLog.length > 0 ? (
+          {skill.practiceLog && skill.practiceLog.length > 0 ? (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -208,18 +299,18 @@ export default function SkillDetailPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {skill.practiceLog.slice().sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((entry) => (
+                {skill.practiceLog.map((entry) => ( // practiceLog is already sorted by useSkills hook
                   <TableRow key={entry.id}>
                     <TableCell>{new Date(entry.date).toLocaleDateString()}</TableCell>
                     <TableCell>{formatDuration(entry.duration)}</TableCell>
                     <TableCell className="max-w-xs truncate">{entry.notes || '-'}</TableCell>
                     <TableCell className="text-right space-x-2">
-                       <Button variant="ghost" size="icon" onClick={() => setEditingLogEntry(entry)}>
+                       <Button variant="ghost" size="icon" onClick={() => setEditingLogEntry(entry)} disabled={isSubmitting}>
                           <Edit3 className="h-4 w-4" />
                        </Button>
                        <AlertDialog>
                         <AlertDialogTrigger asChild>
-                           <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+                           <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" disabled={isSubmitting}>
                               <Trash2 className="h-4 w-4" />
                            </Button>
                         </AlertDialogTrigger>
@@ -232,8 +323,8 @@ export default function SkillDetailPage() {
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDeleteLogEntry(entry.id)}>
-                              Delete
+                            <AlertDialogAction onClick={() => handleDeleteLogEntry(entry.id)} disabled={isSubmitting}>
+                              {isSubmitting && editingLogEntry?.id !== entry.id ? <Loader2 className="animate-spin mr-2"/> : null} Delete
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>

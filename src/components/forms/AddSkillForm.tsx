@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { BookOpen, Target, Brain } from "lucide-react";
+import { BookOpen, Target, Brain, Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, "Skill name must be at least 2 characters.").max(50, "Skill name must be at most 50 characters."),
@@ -27,12 +28,13 @@ const formSchema = z.object({
 export type AddSkillFormValues = z.infer<typeof formSchema>;
 
 interface AddSkillFormProps {
-  onSubmit: (values: AddSkillFormValues) => void;
+  onSubmit: (values: AddSkillFormValues) => Promise<void> | void;
   defaultValues?: Partial<AddSkillFormValues>;
   isEditing?: boolean;
+  isSubmitting?: boolean;
 }
 
-export function AddSkillForm({ onSubmit, defaultValues, isEditing = false }: AddSkillFormProps) {
+export function AddSkillForm({ onSubmit, defaultValues, isEditing = false, isSubmitting = false }: AddSkillFormProps) {
   const form = useForm<AddSkillFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues || {
@@ -62,7 +64,7 @@ export function AddSkillForm({ onSubmit, defaultValues, isEditing = false }: Add
                 <FormItem>
                   <FormLabel className="flex items-center gap-1"><BookOpen size={16}/> Skill Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Python Programming" {...field} />
+                    <Input placeholder="e.g., Python Programming" {...field} disabled={isSubmitting} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -75,7 +77,7 @@ export function AddSkillForm({ onSubmit, defaultValues, isEditing = false }: Add
                 <FormItem>
                   <FormLabel className="flex items-center gap-1"><Target size={16}/> Target Practice Time (Optional)</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 50 (in hours)" {...field} />
+                    <Input type="number" placeholder="e.g., 50 (in hours)" {...field} disabled={isSubmitting}/>
                   </FormControl>
                   <FormDescription>
                     Set a goal for how many hours you want to practice this skill.
@@ -91,7 +93,7 @@ export function AddSkillForm({ onSubmit, defaultValues, isEditing = false }: Add
                 <FormItem>
                   <FormLabel className="flex items-center gap-1"><Brain size={16}/> Learning Goals (Optional)</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="e.g., Build a web app, understand data structures" {...field} rows={3} />
+                    <Textarea placeholder="e.g., Build a web app, understand data structures" {...field} rows={3} disabled={isSubmitting} />
                   </FormControl>
                    <FormDescription>
                     Describe what you want to achieve with this skill.
@@ -100,7 +102,8 @@ export function AddSkillForm({ onSubmit, defaultValues, isEditing = false }: Add
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" size="lg">
+            <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+              {isSubmitting ? <Loader2 className="animate-spin mr-2" /> : null}
               {isEditing ? "Save Changes" : "Add Skill"}
             </Button>
           </form>
