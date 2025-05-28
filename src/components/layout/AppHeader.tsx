@@ -1,5 +1,7 @@
+
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { AppLogo } from '@/components/AppLogo';
+import { LoginButton } from '@/components/auth/LoginButton';
 
 export function AppHeader() {
   return (
@@ -14,7 +16,7 @@ export function AppHeader() {
         {/* Placeholder for search or other header items */}
       </div>
       <div>
-        {/* Placeholder for user menu or actions */}
+        <LoginButton />
       </div>
     </header>
   );

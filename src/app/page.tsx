@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -7,13 +8,42 @@ import { useBadges } from "@/lib/hooks/useBadges";
 import { SkillCard } from "@/components/SkillCard";
 import { BadgeDisplay } from "@/components/BadgeDisplay";
 import Link from "next/link";
-import { PlusCircle, TrendingUp, Award } from "lucide-react";
+import { PlusCircle, TrendingUp, Award, LogIn, BookOpen } from "lucide-react";
 import { formatDuration, getTotalPracticeTime } from "@/lib/helpers";
+import { useAuth } from "@/hooks/useAuth";
+import { AppLogo } from "@/components/AppLogo";
 
 export default function DashboardPage() {
-  const { skills } = useSkills();
-  const { badges } = useBadges(skills);
+  const { user, loading: authLoading } = useAuth();
+  const { skills } = useSkills(); // Still uses localStorage for now
+  const { badges } = useBadges(skills); // Still uses localStorage for now
 
+  if (authLoading) {
+    // Or a more sophisticated skeleton loader
+    return <div className="text-center py-10">Loading dashboard...</div>;
+  }
+
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-12rem)] text-center p-4">
+        <div className="mb-8">
+          <AppLogo size="lg" />
+        </div>
+        <h1 className="text-4xl font-bold text-primary mb-4">Welcome to Skill Ascent!</h1>
+        <p className="text-xl text-muted-foreground mb-8 max-w-md">
+          Track your skills, log your practice, and watch your abilities soar.
+          Sign in to get started on your journey of self-improvement.
+        </p>
+        <Button asChild size="lg">
+          <Link href="/login">
+            <LogIn className="mr-2 h-5 w-5" /> Sign In to Continue
+          </Link>
+        </Button>
+      </div>
+    );
+  }
+
+  // Logged-in user dashboard content:
   const totalPracticeTimeAllSkills = skills.reduce(
     (total, skill) => total + getTotalPracticeTime(skill),
     0
@@ -41,10 +71,13 @@ export default function DashboardPage() {
         <Card className="shadow-lg rounded-lg">
           <CardHeader>
             <CardTitle className="text-xl">Overall Progress</CardTitle>
+            <CardDescription>
+              Hello, {user.displayName || user.email}! Here's your current progress.
+            </CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="p-4 bg-secondary/30 rounded-md">
-              <p className="text-sm text-muted-foreground">Total Skills</p>
+              <p className="text-sm text-muted-foreground">Total Skills Tracked</p>
               <p className="text-2xl font-semibold">{skills.length}</p>
             </div>
             <div className="p-4 bg-secondary/30 rounded-md">
@@ -83,6 +116,9 @@ export default function DashboardPage() {
       
       <section>
         <h2 className="text-2xl font-semibold mb-4 text-primary">Your Skills</h2>
+         <p className="text-sm text-muted-foreground mb-4">
+           Note: Skill data is currently stored locally in your browser. Cloud storage for your skills is coming soon!
+        </p>
         {skills.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {skills.map(skill => (
