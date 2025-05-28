@@ -13,9 +13,32 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
+// Check if the essential API key is present
+if (!firebaseConfig.apiKey) {
+  console.error(
+    "Firebase API Key is missing. " +
+    "Please ensure that NEXT_PUBLIC_FIREBASE_API_KEY (and other NEXT_PUBLIC_FIREBASE_... variables) " +
+    "are set in your .env file with the credentials from your Firebase project console. " +
+    "The app will not function correctly without these."
+  );
+}
+
 // Initialize Firebase
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app);
-const db = getFirestore(app);
+// Check if all required config values are present before initializing
+const app = 
+  firebaseConfig.apiKey && 
+  firebaseConfig.authDomain && 
+  firebaseConfig.projectId 
+    ? (!getApps().length ? initializeApp(firebaseConfig) : getApp()) 
+    : null;
+
+// Conditionally initialize Auth and Firestore if app was initialized
+const auth = app ? getAuth(app) : null;
+const db = app ? getFirestore(app) : null;
+
+// If app couldn't be initialized, export nulls or throw an error,
+// so the rest of the app knows Firebase isn't available.
+// For now, auth and db could be null, and consuming code should handle this.
+// A more robust solution might involve a global state or context to indicate Firebase readiness.
 
 export { app, auth, db };
