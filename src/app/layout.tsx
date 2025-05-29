@@ -1,6 +1,6 @@
 
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+// Removed Geist font imports
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import {
@@ -18,15 +18,7 @@ import { AppHeader } from '@/components/layout/AppHeader';
 import { cn } from '@/lib/utils';
 import { AuthProviders } from '@/components/auth/AuthProviders';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+// Removed Geist font constant declarations
 
 export const metadata: Metadata = {
   title: 'Skill Ascent',
@@ -40,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(geistSans.variable, geistMono.variable, "antialiased font-sans")}>
+      <body className={cn("antialiased font-sans")}> {/* Removed Geist font variables from className */}
         <AuthProviders>
           <SidebarProvider defaultOpen={true}>
             <Sidebar collapsible="icon" variant="sidebar" side="left">
