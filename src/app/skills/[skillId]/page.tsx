@@ -14,7 +14,7 @@ import { Progress } from '@/components/ui/progress';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from '@/hooks/use-toast';
 import { formatDuration, getTotalPracticeTime, calculateProgress, getSkillProgressLevel } from '@/lib/helpers';
-import { ArrowLeft, Edit3, Trash2, CalendarDays, Clock, StickyNote, PlusCircle, BookOpen, Target, Brain, Award, BarChartHorizontalBig, Loader2 } from 'lucide-react';
+import { ArrowLeft, Edit3, Trash2, CalendarDays, Clock, StickyNote, PlusCircle, BookOpen, Target, Brain, Award, BarChartHorizontalBig, Loader2, History } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState, useMemo } from 'react';
 import type { PracticeEntry, Skill } from '@/types';
@@ -50,7 +50,6 @@ export default function SkillDetailPage() {
     error: skillsError 
   } = useSkills();
   
-  // Memoize skill to prevent re-renders if skills array reference changes but content for this skillId doesn't
   const skill = useMemo(() => getSkillById(skillId), [skillId, skills, getSkillById]);
 
   const { badges, loading: badgesLoading, error: badgesError } = useBadges({ skills, skillsLoading: skillsHookLoading });
@@ -68,7 +67,7 @@ export default function SkillDetailPage() {
   }, [user, authLoading, router, skillId]);
 
 
-  const isLoading = authLoading || skillsHookLoading || (user && !skill && skillsHookLoading); // skill might be undefined during initial load
+  const isLoading = authLoading || skillsHookLoading || (user && !skill && skillsHookLoading); 
 
   if (isLoading) {
     return (
@@ -82,17 +81,17 @@ export default function SkillDetailPage() {
   if (!user && !authLoading) {
      return (
       <div className="text-center py-10">
-        <p>Please <Link href={`/login?redirect=/skills/${skillId}`} className="underline">log in</Link> to view this skill.</p>
+        <p>Please <Link href={`/login?redirect=/skills/${skillId}`} className="underline text-primary hover:text-primary/80">log in</Link> to view this skill.</p>
       </div>
     );
   }
   
   if (skillsError) {
      return (
-      <Alert variant="destructive" className="max-w-2xl mx-auto">
+      <Alert variant="destructive" className="max-w-2xl mx-auto shadow-lg rounded-lg">
         <AlertTitle>Error Loading Skill</AlertTitle>
         <AlertDescription>
-          There was a problem loading skill data: {skillsError}
+          <p>There was a problem loading skill data: {skillsError}</p>
            <Button asChild variant="outline" className="mt-4 ml-auto block">
             <Link href="/skills"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Skills</Link>
           </Button>
@@ -101,20 +100,20 @@ export default function SkillDetailPage() {
     );
   }
   
-  if (!skill && !skillsHookLoading) { // Ensure not to show "not found" while still loading
+  if (!skill && !skillsHookLoading) { 
     return (
       <div className="text-center py-10">
+        <BookOpen size={48} className="mx-auto text-muted-foreground mb-4 opacity-70" />
         <h2 className="text-2xl font-semibold text-destructive">Skill not found</h2>
-        <p className="text-muted-foreground mt-2">The skill you are looking for does not exist or has been deleted.</p>
-        <Button asChild variant="outline" className="mt-4">
-          <Link href="/skills"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Skills</Link>
+        <p className="text-muted-foreground mt-2 mb-6">The skill you are looking for does not exist or has been deleted.</p>
+        <Button asChild variant="outline" size="lg" className="shadow-md hover:shadow-lg">
+          <Link href="/skills"><ArrowLeft className="mr-2 h-4 w-4" /> Back to All Skills</Link>
         </Button>
       </div>
     );
   }
   
-  // This check is only valid if skill is loaded
-  if (!skill) return null; // Should be covered by loading or error state, but as a safeguard
+  if (!skill) return null; 
 
 
   const totalTime = getTotalPracticeTime(skill);
@@ -149,7 +148,6 @@ export default function SkillDetailPage() {
       toast({ title: "Error logging practice", description: (e as Error).message || "Could not log practice.", variant: "destructive" });
     } finally {
       setIsSubmitting(false);
-      // Reset form if it's a new entry (by key change or explicit reset if using react-hook-form's reset)
     }
   };
   
@@ -166,13 +164,9 @@ export default function SkillDetailPage() {
   };
 
   const handleUpdateLearningGoals = async (goals: string) => {
-    // This function is called onBlur from PersonalizedLearningPlan's textarea
-    // We only want to save if the goal actually changed from what's in the skill object
     if (skill.learningGoals !== goals) {
         try {
             await updateSkill(skillId, { learningGoals: goals });
-            // Optionally, provide a subtle toast for this auto-save like action
-            // toast({ title: "Learning goals updated", duration: 2000 });
         } catch (e) {
             toast({ title: "Error updating goals", description: (e as Error).message || "Could not save learning goals.", variant: "destructive" });
         }
@@ -182,8 +176,8 @@ export default function SkillDetailPage() {
   const skillSpecificBadges = badges.filter(b => b.skillId === skillId && b.achievedAt);
 
   return (
-    <div className="space-y-8">
-      <Button variant="outline" size="sm" onClick={() => router.push('/skills')} className="mb-6">
+    <div className="space-y-10">
+      <Button variant="outline" size="sm" onClick={() => router.push('/skills')} className="mb-0 shadow-sm hover:shadow-md">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to All Skills
       </Button>
 
@@ -195,38 +189,40 @@ export default function SkillDetailPage() {
           isSubmitting={isSubmitting}
         />
       ) : (
-        <Card className="shadow-xl rounded-lg overflow-hidden">
+        <Card className="shadow-xl rounded-lg overflow-hidden border border-primary/20">
           <CardHeader className="bg-primary/10 p-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
               <CardTitle className="text-3xl font-bold text-primary flex items-center gap-3">
-                <BookOpen size={32} className="text-accent"/> {skill.name}
+                <BookOpen size={30} className="text-accent shrink-0"/> <span className="break-all">{skill.name}</span>
               </CardTitle>
-              <Button variant="outline" size="sm" onClick={() => setIsEditingSkill(true)} disabled={isSubmitting}>
-                <Edit3 className="mr-2 h-4 w-4" /> Edit Skill Details
+              <Button variant="outline" size="sm" onClick={() => setIsEditingSkill(true)} disabled={isSubmitting} className="shadow-sm hover:shadow-md">
+                <Edit3 className="mr-2 h-4 w-4" /> Edit Skill
               </Button>
             </div>
-            <CardDescription className="mt-1 text-muted-foreground">
+            <CardDescription className="mt-1 text-muted-foreground text-base">
               Current Level: <span className="font-semibold text-primary">{progressLevel}</span>
             </CardDescription>
           </CardHeader>
-          <CardContent className="p-6 grid md:grid-cols-2 gap-6">
+          <CardContent className="p-6 grid md:grid-cols-2 gap-x-8 gap-y-6">
             <div>
-              <h3 className="font-semibold text-lg mb-1 flex items-center gap-1"><BarChartHorizontalBig size={20}/>Progress Summary</h3>
-              <div className="space-y-2 text-sm">
-                <p className="flex items-center gap-1"><Clock size={16}/> Total practice: <span className="font-medium">{formatDuration(totalTime)}</span></p>
-                {skill.targetPracticeTime && (
+              <h3 className="font-semibold text-lg mb-2 flex items-center gap-2 text-primary"><BarChartHorizontalBig size={20} className="text-accent"/>Progress Summary</h3>
+              <div className="space-y-3 text-sm">
+                <p className="flex items-center gap-2"><Clock size={16} className="text-muted-foreground"/> Total practice: <span className="font-medium text-foreground">{formatDuration(totalTime)}</span></p>
+                {skill.targetPracticeTime && skill.targetPracticeTime > 0 ? (
                   <>
-                    <p className="flex items-center gap-1"><Target size={16}/> Target: <span className="font-medium">{formatDuration(skill.targetPracticeTime * 60)}</span></p>
-                    <Progress value={progressPercentage} className="h-3 rounded-full" />
-                    <p className="text-xs text-right">{progressPercentage.toFixed(0)}% of target achieved</p>
+                    <p className="flex items-center gap-2"><Target size={16} className="text-muted-foreground"/> Target: <span className="font-medium text-foreground">{formatDuration(skill.targetPracticeTime * 60)}</span></p>
+                    <Progress value={progressPercentage} aria-label={`${progressPercentage.toFixed(0)}% of target achieved`} className="h-3 rounded-full" />
+                    <p className="text-xs text-right text-muted-foreground">{progressPercentage.toFixed(0)}% of target achieved</p>
                   </>
+                ) : (
+                     <p className="flex items-center gap-2 text-muted-foreground italic"><Target size={16}/> No target time set.</p>
                 )}
               </div>
             </div>
              {skill.learningGoals && (
               <div>
-                <h3 className="font-semibold text-lg mb-1 flex items-center gap-1"><Brain size={20}/>Learning Goals</h3>
-                <p className="text-sm text-muted-foreground whitespace-pre-wrap">{skill.learningGoals}</p>
+                <h3 className="font-semibold text-lg mb-2 flex items-center gap-2 text-primary"><Brain size={20} className="text-accent"/>Learning Goals</h3>
+                <p className="text-sm text-muted-foreground whitespace-pre-wrap bg-secondary/30 p-3 rounded-md">{skill.learningGoals}</p>
               </div>
             )}
           </CardContent>
@@ -248,10 +244,10 @@ export default function SkillDetailPage() {
 
       <div className="grid lg:grid-cols-3 gap-8 items-start">
         <div className="lg:col-span-1 space-y-6">
-          <Card className="shadow-lg rounded-lg">
+          <Card className="shadow-xl rounded-lg border border-primary/10">
             <CardHeader>
               <CardTitle className="text-xl font-semibold text-primary flex items-center gap-2">
-                <PlusCircle size={24} className="text-accent" />
+                <PlusCircle size={22} className="text-accent" />
                 {editingLogEntry ? "Edit Practice Log" : "Log New Practice"}
               </CardTitle>
             </CardHeader>
@@ -268,7 +264,7 @@ export default function SkillDetailPage() {
                 isSubmitting={isSubmitting}
               />
               {editingLogEntry && (
-                <Button variant="outline" size="sm" className="w-full mt-4" onClick={() => setEditingLogEntry(null)} disabled={isSubmitting}>
+                <Button variant="outline" size="sm" className="w-full mt-4 shadow-sm hover:shadow-md" onClick={() => setEditingLogEntry(null)} disabled={isSubmitting}>
                   Cancel Edit
                 </Button>
               )}
@@ -281,61 +277,74 @@ export default function SkillDetailPage() {
         </div>
       </div>
       
-      <Card className="shadow-lg rounded-lg">
+      <Card className="shadow-xl rounded-lg border border-primary/10">
         <CardHeader>
           <CardTitle className="text-xl font-semibold text-primary flex items-center gap-2">
-            <CalendarDays size={24} className="text-accent" /> Practice History
+            <History size={22} className="text-accent" /> Practice History
           </CardTitle>
+           <CardDescription>
+            A record of all your practice sessions for "{skill.name}".
+          </CardDescription>
         </CardHeader>
         <CardContent>
           {skill.practiceLog && skill.practiceLog.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Notes</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {skill.practiceLog.map((entry) => ( // practiceLog is already sorted by useSkills hook
-                  <TableRow key={entry.id}>
-                    <TableCell>{new Date(entry.date).toLocaleDateString()}</TableCell>
-                    <TableCell>{formatDuration(entry.duration)}</TableCell>
-                    <TableCell className="max-w-xs truncate">{entry.notes || '-'}</TableCell>
-                    <TableCell className="text-right space-x-2">
-                       <Button variant="ghost" size="icon" onClick={() => setEditingLogEntry(entry)} disabled={isSubmitting}>
-                          <Edit3 className="h-4 w-4" />
-                       </Button>
-                       <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                           <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" disabled={isSubmitting}>
-                              <Trash2 className="h-4 w-4" />
-                           </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Log Entry?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Are you sure you want to delete this practice log from {new Date(entry.date).toLocaleDateString()}? This action cannot be undone.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDeleteLogEntry(entry.id)} disabled={isSubmitting}>
-                              {isSubmitting && editingLogEntry?.id !== entry.id ? <Loader2 className="animate-spin mr-2"/> : null} Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="min-w-[100px]">Date</TableHead>
+                    <TableHead className="min-w-[100px]">Duration</TableHead>
+                    <TableHead>Notes</TableHead>
+                    <TableHead className="text-right min-w-[100px]">Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {skill.practiceLog.map((entry) => ( 
+                    <TableRow key={entry.id} className="hover:bg-muted/20">
+                      <TableCell className="font-medium">{new Date(entry.date).toLocaleDateString()}</TableCell>
+                      <TableCell>{formatDuration(entry.duration)}</TableCell>
+                      <TableCell className="max-w-xs whitespace-pre-wrap break-words">{entry.notes || <span className="text-muted-foreground italic">No notes</span>}</TableCell>
+                      <TableCell className="text-right space-x-1">
+                         <Button variant="ghost" size="icon" onClick={() => setEditingLogEntry(entry)} disabled={isSubmitting} title="Edit log">
+                            <Edit3 className="h-4 w-4 text-blue-600" />
+                         </Button>
+                         <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                             <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive/80" disabled={isSubmitting} title="Delete log">
+                                <Trash2 className="h-4 w-4" />
+                             </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Log Entry?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete this practice log from {new Date(entry.date).toLocaleDateString()}? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel disabled={isSubmitting}>Cancel</AlertDialogCancel>
+                              <AlertDialogAction 
+                                onClick={() => handleDeleteLogEntry(entry.id)} 
+                                disabled={isSubmitting && editingLogEntry?.id !== entry.id}
+                                className="bg-destructive hover:bg-destructive/90"
+                              >
+                                {isSubmitting && editingLogEntry?.id !== entry.id ? <Loader2 className="animate-spin mr-2 h-4 w-4"/> : null} Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           ) : (
-            <p className="text-muted-foreground text-center py-4">No practice logged for this skill yet.</p>
+            <div className="text-center py-10 text-muted-foreground">
+              <CalendarDays size={40} className="mx-auto mb-3 opacity-70" />
+              <p className="text-lg">No practice logged for this skill yet.</p>
+              <p className="text-sm">Log your first session above to start tracking your progress!</p>
+            </div>
           )}
         </CardContent>
       </Card>

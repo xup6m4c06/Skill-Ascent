@@ -8,7 +8,7 @@ import { useBadges } from "@/lib/hooks/useBadges";
 import { SkillCard } from "@/components/SkillCard";
 import { BadgeDisplay } from "@/components/BadgeDisplay";
 import Link from "next/link";
-import { PlusCircle, TrendingUp, Award, LogIn, BookOpen, Loader2 } from "lucide-react";
+import { PlusCircle, TrendingUp, Award, LogIn, BookOpen, Loader2, ListChecks, BarChartBig, ShieldCheck } from "lucide-react";
 import { formatDuration, getTotalPracticeTime } from "@/lib/helpers";
 import { useAuth } from "@/hooks/useAuth";
 import { AppLogo } from "@/components/AppLogo";
@@ -50,7 +50,7 @@ export default function DashboardPage() {
   
   if (skillsError || badgesError) {
     return (
-      <Alert variant="destructive" className="max-w-2xl mx-auto">
+      <Alert variant="destructive" className="max-w-2xl mx-auto my-8 shadow-lg rounded-lg">
         <AlertTitle>Error Loading Dashboard</AlertTitle>
         <AlertDescription>
           There was a problem loading your dashboard data. Please try refreshing the page.
@@ -73,39 +73,54 @@ export default function DashboardPage() {
     .slice(0, 3);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <section>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <h1 className="text-3xl font-bold text-primary flex items-center gap-2">
             <TrendingUp size={32} className="text-accent" /> Your Dashboard
           </h1>
-          <Button asChild size="lg">
+          <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-shadow">
             <Link href="/skills/new">
               <PlusCircle className="mr-2 h-5 w-5" /> Add New Skill
             </Link>
           </Button>
         </div>
 
-        <Card className="shadow-lg rounded-lg">
-          <CardHeader>
+        <Card className="shadow-xl rounded-lg overflow-hidden">
+          <CardHeader className="bg-primary/5">
             <CardTitle className="text-xl">Overall Progress</CardTitle>
             <CardDescription>
               Hello, {user.displayName || user.email}! Here's your current progress.
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 bg-secondary/30 rounded-md">
-              <p className="text-sm text-muted-foreground">Total Skills Tracked</p>
-              <p className="text-2xl font-semibold">{skills.length}</p>
-            </div>
-            <div className="p-4 bg-secondary/30 rounded-md">
-              <p className="text-sm text-muted-foreground">Total Practice Time</p>
-              <p className="text-2xl font-semibold">{formatDuration(totalPracticeTimeAllSkills)}</p>
-            </div>
-            <div className="p-4 bg-secondary/30 rounded-md">
-              <p className="text-sm text-muted-foreground">Badges Earned</p>
-              <p className="text-2xl font-semibold">{badges.filter(b => b.achievedAt).length}</p>
-            </div>
+          <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
+            <Card className="bg-secondary/30 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+              <CardHeader className="p-2 flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Skills Tracked</CardTitle>
+                <ListChecks className="h-5 w-5 text-accent" />
+              </CardHeader>
+              <CardContent className="p-2">
+                <div className="text-2xl font-bold">{skills.length}</div>
+              </CardContent>
+            </Card>
+             <Card className="bg-secondary/30 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+              <CardHeader className="p-2 flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Practice Time</CardTitle>
+                <BarChartBig className="h-5 w-5 text-accent" />
+              </CardHeader>
+              <CardContent className="p-2">
+                <div className="text-2xl font-bold">{formatDuration(totalPracticeTimeAllSkills)}</div>
+              </CardContent>
+            </Card>
+             <Card className="bg-secondary/30 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+              <CardHeader className="p-2 flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Badges Earned</CardTitle>
+                <ShieldCheck className="h-5 w-5 text-accent" />
+              </CardHeader>
+              <CardContent className="p-2">
+                <div className="text-2xl font-bold">{badges.filter(b => b.achievedAt).length}</div>
+              </CardContent>
+            </Card>
           </CardContent>
         </Card>
       </section>
@@ -115,16 +130,18 @@ export default function DashboardPage() {
           <Award size={28} className="text-accent" /> Recently Achieved Badges
         </h2>
         {recentlyAchievedBadges.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {recentlyAchievedBadges.map(badge => (
               <BadgeDisplay key={badge.id} badge={badge} />
             ))}
           </div>
         ) : (
-          <Card className="rounded-lg">
-            <CardContent className="p-6 text-center text-muted-foreground">
-              <p>No badges achieved yet. Keep practicing!</p>
-              <Button variant="link" asChild className="mt-2">
+          <Card className="rounded-lg shadow-md">
+            <CardContent className="p-8 text-center text-muted-foreground">
+              <Award size={40} className="mx-auto mb-3 text-accent opacity-70" />
+              <p className="text-lg">No badges achieved recently.</p>
+              <p className="text-sm">Keep practicing to unlock new achievements!</p>
+              <Button variant="link" asChild className="mt-2 text-primary">
                 <Link href="/achievements">View all badges</Link>
               </Button>
             </CardContent>
@@ -133,7 +150,9 @@ export default function DashboardPage() {
       </section>
       
       <section>
-        <h2 className="text-2xl font-semibold mb-4 text-primary">Your Skills</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-primary flex items-center gap-2">
+         <BookOpen size={28} className="text-accent" /> Your Skills
+        </h2>
         {skills.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {skills.map(skill => (
@@ -141,14 +160,14 @@ export default function DashboardPage() {
             ))}
           </div>
         ) : (
-          <Card className="rounded-lg">
+          <Card className="rounded-lg shadow-md">
             <CardContent className="p-10 text-center">
-              <BookOpen size={48} className="mx-auto text-muted-foreground mb-4" />
-              <p className="text-lg text-muted-foreground mb-2">No skills defined yet.</p>
-              <p className="text-sm text-muted-foreground mb-6">Start your journey by adding a skill you want to develop.</p>
-              <Button asChild>
+              <BookOpen size={56} className="mx-auto text-muted-foreground mb-4 opacity-70" />
+              <p className="text-xl text-muted-foreground mb-2">No skills defined yet.</p>
+              <p className="text-md text-muted-foreground mb-6">Start your journey by adding a skill you want to develop.</p>
+              <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-shadow">
                 <Link href="/skills/new">
-                  <PlusCircle className="mr-2 h-4 w-4" /> Add Your First Skill
+                  <PlusCircle className="mr-2 h-5 w-5" /> Add Your First Skill
                 </Link>
               </Button>
             </CardContent>
