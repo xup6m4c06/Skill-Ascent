@@ -39,7 +39,7 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
           const batch = writeBatch(db);
           const userInitialBadges = initialBadges.map(b => ({
             ...b,
-            achievedAt: undefined, // Explicitly ensure not achieved
+            achievedAt: null, // Explicitly ensure not achieved
           }));
           userInitialBadges.forEach(badge => {
             const badgeDocRef = doc(badgesCollectionRef, badge.id);
