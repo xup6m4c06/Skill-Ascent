@@ -24,5 +24,5 @@ export interface Badge {
   criteriaType: 'totalPracticeTime' | 'skillSpecificPracticeTime' | 'skillCount' | 'logFrequency';
   criteriaValue: number; // e.g., 60 for 60 minutes, 1 for 1 skill
   skillId?: string; // For skill-specific badges
-  achievedAt?: string; // ISO string, if achieved
+  achievedAt?: string | null; // ISO string, if achieved, or null if not achieved
 }
