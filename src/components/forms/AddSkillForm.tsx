@@ -32,9 +32,10 @@ const formSchema = z.object({
     }),
   learningGoals: z
     .string()
-    .optional()
-    .max(500, "Learning goals must be at most 500 characters."),
+    .max(500, "Learning goals must be at most 500 characters.")
+    .optional(),
 });
+
 
 export type AddSkillFormValues = z.infer<typeof formSchema>;
 
