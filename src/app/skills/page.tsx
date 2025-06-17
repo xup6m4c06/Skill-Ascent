@@ -90,7 +90,7 @@ export default function SkillsPage() {
           <BookOpen size={32} className="text-accent" /> Manage Your Skills
         </h1>
         <Button asChild size="lg">
-          <Link href="/skills/new" legacyBehavior passHref>
+          <Link href="/skills/new">
           <PlusCircle className="mr-2 h-5 w-5" /> Add New Skill
           </Link>
         </Button>
@@ -171,6 +171,7 @@ export default function SkillsPage() {
             <BookOpen size={48} className="mx-auto text-muted-foreground mb-4" />
             <p className="text-lg text-muted-foreground mb-2">You haven't added any skills yet.</p>
             <p className="text-sm text-muted-foreground mb-6">Click the button above to start tracking a new skill!</p>
+              
               <Button asChild>
                 <Link href="/skills/new" legacyBehavior passHref>
                 <PlusCircle className="mr-2 h-5 w-5" /> Add New Skill

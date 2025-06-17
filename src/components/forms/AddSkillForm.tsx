@@ -50,8 +50,8 @@ export function AddSkillForm({ onSubmit, defaultValues, isEditing = false, isSub
   const form = useForm<AddSkillFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues || {
-      name: "",
-      targetPracticeTime: undefined,
+ name: "",
+ targetPracticeTime: 0, // Initialize with 0 instead of undefined
       learningGoals: "",
     },
   });
