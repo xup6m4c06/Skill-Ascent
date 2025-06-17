@@ -80,10 +80,12 @@ export default function DashboardPage() {
             <TrendingUp size={32} className="text-accent" /> Your Dashboard
           </h1>
           <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-shadow">
-            <Link href="/skills/new">
- <PlusCircle className="mr-2 h-5 w-5" /> Add New Skill
+            <Link href="/skills/new" className="inline-flex items-center">
+              <PlusCircle className="mr-2 h-5 w-5" />
+              <span>Add Your First Skill</span>
             </Link>
           </Button>
+
         </div>
 
         <Card className="shadow-xl rounded-lg overflow-hidden">
@@ -164,10 +166,12 @@ export default function DashboardPage() {
               <p className="text-xl text-muted-foreground mb-2">No skills defined yet.</p>
               <p className="text-md text-muted-foreground mb-6">Start your journey by adding a skill you want to develop.</p>
               <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-shadow">
-                <Link href="/skills/new" legacyBehavior passHref>
- <PlusCircle className=\"mr-2 h-5 w-5\" /> Add Your First Skill
+                <Link href="/skills/new" className="inline-flex items-center">
+                <PlusCircle className="mr-2 h-5 w-5" />
+                <span>Add Your First Skill</span>
                 </Link>
               </Button>
+
             </CardContent>
           </Card>
         )}
