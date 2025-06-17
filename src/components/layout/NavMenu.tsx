@@ -30,9 +30,9 @@ export function NavMenu() {
   return (
     <SidebarMenu>
       {navItems.map((item) => (
-        <SidebarMenuItem key={item.href}>
-          <SidebarMenuButton
-            asChild
+ <SidebarMenuItem key={item.href}>
+ <Link href={item.href} passHref>
+ <SidebarMenuButton
             isActive={pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))}
             tooltip={item.label}
             className={cn(
@@ -40,13 +40,13 @@ export function NavMenu() {
               ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
               : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
             )}
-          >
-            <Link href={item.href}>
-              <item.icon className="shrink-0" />
-              <span className="truncate group-data-[collapsible=icon]:hidden">{item.label}</span>
-            </Link>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
+ asChild
+ >
+ <item.icon className="shrink-0" />
+ <span className="truncate group-data-[collapsible=icon]:hidden">{item.label}</span>
+ </SidebarMenuButton>
+ </Link>
+ </SidebarMenuItem>
       ))}
     </SidebarMenu>
   );
