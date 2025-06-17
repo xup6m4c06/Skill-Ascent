@@ -30,24 +30,22 @@ export function NavMenu() {
   return (
     <SidebarMenu>
       {navItems.map((item) => (
-        <SidebarMenuItem key={item.href} asChild>
-          <Link href={item.href} legacyBehavior passHref>
-            <SidebarMenuButton
-              asChild
-              isActive={pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))}
-              tooltip={item.label}
-              className={cn(
-                (pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href)))
-                ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
-                : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
-              )}
-            >
-              <a>
-                <item.icon className="shrink-0" />
-                <span className="truncate group-data-[collapsible=icon]:hidden">{item.label}</span>
-              </a>
-            </SidebarMenuButton>
-          </Link>
+        <SidebarMenuItem key={item.href}>
+          <SidebarMenuButton
+            asChild
+            isActive={pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))}
+            tooltip={item.label}
+            className={cn(
+              (pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href)))
+              ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
+              : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+            )}
+          >
+            <Link href={item.href}>
+              <item.icon className="shrink-0" />
+              <span className="truncate group-data-[collapsible=icon]:hidden">{item.label}</span>
+            </Link>
+          </SidebarMenuButton>
         </SidebarMenuItem>
       ))}
     </SidebarMenu>
