@@ -30,7 +30,7 @@ export function NavMenu() {
   return (
     <SidebarMenu>
       {navItems.map((item) => (
-        <SidebarMenuItem key={item.href}>
+        <SidebarMenuItem key={item.href} asChild>
           <Link href={item.href} legacyBehavior passHref>
             <SidebarMenuButton
               asChild

@@ -52,13 +52,13 @@ export function LoginButton() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link href="/">
+            <Link href="/" legacyBehavior>
               <LayoutDashboard className="mr-2 h-4 w-4" />
               <span>Dashboard</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/profile">
+            <Link href="/profile" legacyBehavior>
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
             </Link>
@@ -75,7 +75,7 @@ export function LoginButton() {
 
   return (
     <Button asChild variant="outline" size="sm">
-      <Link href="/login">
+      <Link href="/login" legacyBehavior>
         <LogIn className="mr-2 h-4 w-4" />
         Login
       </Link>

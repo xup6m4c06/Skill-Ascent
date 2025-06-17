@@ -88,16 +88,16 @@ export default function SkillDetailPage() {
   
   if (skillsError) {
      return (
-      <Alert variant="destructive" className="max-w-2xl mx-auto shadow-lg rounded-lg">
-        <AlertTitle>Error Loading Skill</AlertTitle>
-        <AlertDescription>
-          <p>There was a problem loading skill data: {skillsError}</p>
-           <Button asChild variant="outline" className="mt-4 ml-auto block">
-            <Link href="/skills"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Skills</Link>
-          </Button>
-        </AlertDescription>
-      </Alert>
-    );
+       <Alert variant="destructive" className="max-w-2xl mx-auto shadow-lg rounded-lg">
+         <AlertTitle>Error Loading Skill</AlertTitle>
+         <AlertDescription>
+           <p>There was a problem loading skill data: {skillsError}</p>
+            <Button asChild variant="outline" className="mt-4 ml-auto block">
+             <Link href="/skills" legacyBehavior><ArrowLeft className="mr-2 h-4 w-4" /> Back to Skills</Link>
+           </Button>
+         </AlertDescription>
+       </Alert>
+     );
   }
   
   if (!skill && !skillsHookLoading) { 
@@ -107,7 +107,7 @@ export default function SkillDetailPage() {
         <h2 className="text-2xl font-semibold text-destructive">Skill not found</h2>
         <p className="text-muted-foreground mt-2 mb-6">The skill you are looking for does not exist or has been deleted.</p>
         <Button asChild variant="outline" size="lg" className="shadow-md hover:shadow-lg">
-          <Link href="/skills"><ArrowLeft className="mr-2 h-4 w-4" /> Back to All Skills</Link>
+          <Link href="/skills" legacyBehavior><ArrowLeft className="mr-2 h-4 w-4" /> Back to All Skills</Link>
         </Button>
       </div>
     );
