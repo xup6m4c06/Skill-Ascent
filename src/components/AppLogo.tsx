@@ -10,9 +10,11 @@ export function AppLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
     <Link
       href="/"
       className="flex items-center gap-2 text-primary hover:text-primary/90 transition-colors"
-      legacyBehavior>
-      <MountainSnow className={`${iconSize} text-accent`} />
-      <span className={`${textSize} font-semibold text-foreground`}>{APP_NAME}</span>
+>
+      <div> {/* Wrap children in a single parent element */}
+        <MountainSnow className={`${iconSize} text-accent`} />
+        <span className={`${textSize} font-semibold text-foreground`}>{APP_NAME}</span>
+      </div>
     </Link>
   );
 }
