@@ -90,11 +90,9 @@ export default function SkillsPage() {
           <BookOpen size={32} className="text-accent" /> Manage Your Skills
         </h1>
         <Button asChild size="lg">
-          <Link href="/skills/new" legacyBehavior>
-
-            <span><PlusCircle className="mr-2 h-5 w-5" /> Add New Skill</span>
+          <Link href="/skills/new" legacyBehavior passHref>
+            <a><PlusCircle className="mr-2 h-5 w-5" /> Add New Skill</a>
           </Link>
-
         </Button>
       </div>
       {skills && skills.length > 0 ? (
@@ -133,9 +131,12 @@ export default function SkillsPage() {
                 </CardContent>
                 <CardFooter className="flex justify-between items-center gap-2">
                   <Button asChild variant="outline" size="sm">
+                    {/* This Link does not use legacyBehavior, so it's fine as is.
+                        It renders an <a> with a <span> inside. Button styles the <a>.
+                        Keeping this as is, as it's a valid modern pattern.
+                    */}
                     <Link href={`/skills/${skill.id}`}>
                       <span><Edit3 className="mr-2 h-4 w-4" /> View/Edit</span>
-
                     </Link>
                   </Button>
                   <AlertDialog>
@@ -171,9 +172,10 @@ export default function SkillsPage() {
             <p className="text-lg text-muted-foreground mb-2">You haven't added any skills yet.</p>
             <p className="text-sm text-muted-foreground mb-6">Click the button above to start tracking a new skill!</p>
              <Button asChild>
-                <Link href="/skills/new" legacyBehavior>
-                <span><PlusCircle className="mr-2 h-4 w-4" /> Add Your First Skill</span>
-              </Button>
+                <Link href="/skills/new" legacyBehavior passHref>
+                  <a><PlusCircle className="mr-2 h-4 w-4" /> Add Your First Skill</a>
+                </Link>
+          </Button>
           </CardContent>
         </Card>
       )}

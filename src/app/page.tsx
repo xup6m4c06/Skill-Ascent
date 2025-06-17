@@ -40,8 +40,10 @@ export default function DashboardPage() {
           Sign in to get started on your journey of self-improvement.
         </p>
         <Button asChild size="lg">
-          <Link href="/login" legacyBehavior>
-            <LogIn className="mr-2 h-5 w-5" /> Sign In to Continue
+          <Link href="/login" legacyBehavior passHref>
+            <a>
+              <LogIn className="mr-2 h-5 w-5" /> Sign In to Continue
+            </a>
           </Link>
         </Button>
       </div>
@@ -80,8 +82,10 @@ export default function DashboardPage() {
             <TrendingUp size={32} className="text-accent" /> Your Dashboard
           </h1>
           <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-shadow">
-            <Link href="/skills/new" legacyBehavior>
-              <PlusCircle className="mr-2 h-5 w-5" /> Add New Skill
+            <Link href="/skills/new" legacyBehavior passHref>
+              <a>
+                <PlusCircle className="mr-2 h-5 w-5" /> Add New Skill
+              </a>
             </Link>
           </Button>
         </div>
@@ -164,8 +168,10 @@ export default function DashboardPage() {
               <p className="text-xl text-muted-foreground mb-2">No skills defined yet.</p>
               <p className="text-md text-muted-foreground mb-6">Start your journey by adding a skill you want to develop.</p>
               <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-shadow">
-                <Link href="/skills/new" legacyBehavior>
-                  <PlusCircle className="mr-2 h-5 w-5" /> Add Your First Skill
+                <Link href="/skills/new" legacyBehavior passHref>
+                  <a>
+                    <PlusCircle className="mr-2 h-5 w-5" /> Add Your First Skill
+                  </a>
                 </Link>
               </Button>
             </CardContent>

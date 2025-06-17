@@ -93,7 +93,11 @@ export default function SkillDetailPage() {
          <AlertDescription>
            <p>There was a problem loading skill data: {skillsError}</p>
             <Button asChild variant="outline" className="mt-4 ml-auto block">
-             <Link href="/skills" legacyBehavior><ArrowLeft className="mr-2 h-4 w-4" /> Back to Skills</Link>
+             <Link href="/skills" legacyBehavior passHref>
+                <a>
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Back to Skills
+                </a>
+             </Link>
            </Button>
          </AlertDescription>
        </Alert>
@@ -107,7 +111,11 @@ export default function SkillDetailPage() {
         <h2 className="text-2xl font-semibold text-destructive">Skill not found</h2>
         <p className="text-muted-foreground mt-2 mb-6">The skill you are looking for does not exist or has been deleted.</p>
         <Button asChild variant="outline" size="lg" className="shadow-md hover:shadow-lg">
-          <Link href="/skills" legacyBehavior><ArrowLeft className="mr-2 h-4 w-4" /> Back to All Skills</Link>
+          <Link href="/skills" legacyBehavior passHref>
+            <a>
+                <ArrowLeft className="mr-2 h-4 w-4" /> Back to All Skills
+            </a>
+          </Link>
         </Button>
       </div>
     );
