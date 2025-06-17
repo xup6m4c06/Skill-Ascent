@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 const formSchema = z.object({
   date: z.date({ required_error: "A date for the practice session is required." }),
   duration: z.coerce.number().positive("Duration must be a positive number.").min(1, "Duration must be at least 1 minute."),
-  notes: z.string().optional().max(500, "Notes must be at most 500 characters."),
+  notes: z.string().max(500, "Notes must be at most 500 characters.").optional(),
 });
 
 export type LogPracticeFormValues = z.infer<typeof formSchema>;
