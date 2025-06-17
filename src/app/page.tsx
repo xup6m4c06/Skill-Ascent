@@ -7,7 +7,7 @@ import { useSkills } from "@/lib/hooks/useSkills";
 import { useBadges } from "@/lib/hooks/useBadges";
 import { SkillCard } from "@/components/SkillCard";
 import { BadgeDisplay } from "@/components/BadgeDisplay";
-import { LinkButton } from "@/components/ui/link-button";
+import Link from "next/link";
 import { PlusCircle, TrendingUp, Award, LogIn, BookOpen, Loader2, ListChecks, BarChartBig, ShieldCheck } from "lucide-react";
 import { formatDuration, getTotalPracticeTime } from "@/lib/helpers";
 import { useAuth } from "@/hooks/useAuth";
