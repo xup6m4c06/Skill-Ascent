@@ -7,7 +7,7 @@ import { useSkills } from "@/lib/hooks/useSkills";
 import { useBadges } from "@/lib/hooks/useBadges";
 import { SkillCard } from "@/components/SkillCard";
 import { BadgeDisplay } from "@/components/BadgeDisplay";
-import Link from "next/link";
+import { LinkButton } from "@/components/ui/link-button";
 import { PlusCircle, TrendingUp, Award, LogIn, BookOpen, Loader2, ListChecks, BarChartBig, ShieldCheck } from "lucide-react";
 import { formatDuration, getTotalPracticeTime } from "@/lib/helpers";
 import { useAuth } from "@/hooks/useAuth";
@@ -40,8 +40,8 @@ export default function DashboardPage() {
           Sign in to get started on your journey of self-improvement.
         </p>
         <Button asChild size="lg">
-          <Link href="/login" legacyBehavior passHref>
- <><LogIn className="mr-2 h-5 w-5" /> Sign In to Continue</>
+          <Link href="/login">
+ <LogIn className="mr-2 h-5 w-5" /> Sign In to Continue
           </Link>
         </Button>
       </div>
@@ -80,8 +80,8 @@ export default function DashboardPage() {
             <TrendingUp size={32} className="text-accent" /> Your Dashboard
           </h1>
           <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-shadow">
-            <Link href="/skills/new" legacyBehavior passHref>
- <><PlusCircle className="mr-2 h-5 w-5" /> Add New Skill</>
+            <Link href="/skills/new">
+ <PlusCircle className="mr-2 h-5 w-5" /> Add New Skill
             </Link>
           </Button>
         </div>
@@ -165,7 +165,7 @@ export default function DashboardPage() {
               <p className="text-md text-muted-foreground mb-6">Start your journey by adding a skill you want to develop.</p>
               <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-shadow">
                 <Link href="/skills/new" legacyBehavior passHref>
- <><PlusCircle className="mr-2 h-5 w-5" /> Add Your First Skill</>
+ <PlusCircle className=\"mr-2 h-5 w-5\" /> Add Your First Skill
                 </Link>
               </Button>
             </CardContent>
