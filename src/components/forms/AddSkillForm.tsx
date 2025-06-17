@@ -20,9 +20,20 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { BookOpen, Target, Brain, Loader2 } from "lucide-react";
 
 const formSchema = z.object({
-  name: z.string().min(2, "Skill name must be at least 2 characters.").max(50, "Skill name must be at most 50 characters."),
-  targetPracticeTime: z.coerce.number().optional().positive("Target time must be a positive number."),
-  learningGoals: z.string().optional().max(500, "Learning goals must be at most 500 characters."),
+  name: z
+    .string()
+    .min(2, "Skill name must be at least 2 characters.")
+    .max(50, "Skill name must be at most 50 characters."),
+  targetPracticeTime: z.coerce
+    .number()
+    .optional()
+    .refine((val) => val === undefined || val > 0, {
+      message: "Target time must be a positive number.",
+    }),
+  learningGoals: z
+    .string()
+    .optional()
+    .max(500, "Learning goals must be at most 500 characters."),
 });
 
 export type AddSkillFormValues = z.infer<typeof formSchema>;
