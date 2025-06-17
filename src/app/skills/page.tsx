@@ -172,8 +172,7 @@ export default function SkillsPage() {
             <p className="text-sm text-muted-foreground mb-6">Click the button above to start tracking a new skill!</p>
              <Button asChild>
                 <Link href="/skills/new" legacyBehavior>
-                  <PlusCircle className="mr-2 h-4 w-4" /> Add Your First Skill
-                </Link>
+                <span><PlusCircle className="mr-2 h-4 w-4" /> Add Your First Skill</span>
               </Button>
           </CardContent>
         </Card>
