@@ -131,10 +131,6 @@ export default function SkillsPage() {
                 </CardContent>
                 <CardFooter className="flex justify-between items-center gap-2">
                   <Button asChild variant="outline" size="sm">
-                    {/* This Link does not use legacyBehavior, so it's fine as is.
-                        It renders an <a> with a <span> inside. Button styles the <a>.
-                        Keeping this as is, as it's a valid modern pattern.
-                    */}
                     <Link href={`/skills/${skill.id}`}>
                       <span><Edit3 className="mr-2 h-4 w-4" /> View/Edit</span>
                     </Link>
@@ -173,8 +169,8 @@ export default function SkillsPage() {
             <p className="text-sm text-muted-foreground mb-6">Click the button above to start tracking a new skill!</p>
               
               <Button asChild>
-                <Link href="/skills/new" legacyBehavior passHref>
-                  <span><PlusCircle className="mr-2 h-5 w-5" /> Add New Skill</span>
+                <Link href="/skills/new">
+                  <PlusCircle className="mr-2 h-5 w-5" /> Add New Skill
                 </Link>
               </Button>
           </CardContent>

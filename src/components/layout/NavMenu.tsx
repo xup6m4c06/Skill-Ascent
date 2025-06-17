@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -31,7 +32,7 @@ export function NavMenu() {
     <SidebarMenu>
       {navItems.map((item) => (
  <SidebarMenuItem key={item.href}>
- <Link href={item.href} passHref>
+ <Link href={item.href}>
  <SidebarMenuButton
             isActive={pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))}
             tooltip={item.label}
