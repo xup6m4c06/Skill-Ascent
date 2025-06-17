@@ -41,9 +41,7 @@ export default function DashboardPage() {
         </p>
         <Button asChild size="lg">
           <Link href="/login" legacyBehavior passHref>
-            <a>
-              <LogIn className="mr-2 h-5 w-5" /> Sign In to Continue
-            </a>
+ <><LogIn className="mr-2 h-5 w-5" /> Sign In to Continue</>
           </Link>
         </Button>
       </div>
@@ -83,9 +81,7 @@ export default function DashboardPage() {
           </h1>
           <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-shadow">
             <Link href="/skills/new" legacyBehavior passHref>
-              <a>
-                <PlusCircle className="mr-2 h-5 w-5" /> Add New Skill
-              </a>
+ <><PlusCircle className="mr-2 h-5 w-5" /> Add New Skill</>
             </Link>
           </Button>
         </div>
@@ -169,9 +165,7 @@ export default function DashboardPage() {
               <p className="text-md text-muted-foreground mb-6">Start your journey by adding a skill you want to develop.</p>
               <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-shadow">
                 <Link href="/skills/new" legacyBehavior passHref>
-                  <a>
-                    <PlusCircle className="mr-2 h-5 w-5" /> Add Your First Skill
-                  </a>
+ <><PlusCircle className="mr-2 h-5 w-5" /> Add Your First Skill</>
                 </Link>
               </Button>
             </CardContent>
