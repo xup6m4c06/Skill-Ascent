@@ -91,8 +91,10 @@ export default function SkillsPage() {
         </h1>
         <Button asChild size="lg">
           <Link href="/skills/new" legacyBehavior>
-            <PlusCircle className="mr-2 h-5 w-5" /> Add New Skill
+
+            <span><PlusCircle className="mr-2 h-5 w-5" /> Add New Skill</span>
           </Link>
+
         </Button>
       </div>
       {skills && skills.length > 0 ? (
@@ -131,8 +133,9 @@ export default function SkillsPage() {
                 </CardContent>
                 <CardFooter className="flex justify-between items-center gap-2">
                   <Button asChild variant="outline" size="sm">
-                    <Link href={`/skills/${skill.id}`} legacyBehavior>
-                      <Edit3 className="mr-2 h-4 w-4" /> View/Edit
+                    <Link href={`/skills/${skill.id}`}>
+                      <span><Edit3 className="mr-2 h-4 w-4" /> View/Edit</span>
+
                     </Link>
                   </Button>
                   <AlertDialog>
