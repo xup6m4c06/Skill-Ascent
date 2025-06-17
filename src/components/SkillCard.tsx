@@ -50,11 +50,9 @@ export function SkillCard({ skill }: SkillCardProps) {
       </CardContent>
       <CardFooter className="mt-auto pt-4 border-t border-border/50">
         <Button asChild variant="outline" size="sm" className="w-full hover:bg-accent/10 hover:border-accent transition-colors">
-          <Link href={`/skills/${skill.id}`} legacyBehavior passHref>
-            <a>
-              <Edit3 className="mr-2 h-4 w-4" />
-              View Details & Log Practice
-            </a>
+          <Link href={`/skills/${skill.id}`}>
+ <Edit3 className="mr-2 h-4 w-4" />
+            View Details & Log Practice
           </Link>
         </Button>
       </CardFooter>

@@ -174,7 +174,7 @@ export default function SkillsPage() {
               
               <Button asChild>
                 <Link href="/skills/new" legacyBehavior passHref>
-                <PlusCircle className="mr-2 h-5 w-5" /> Add New Skill
+                  <span><PlusCircle className="mr-2 h-5 w-5" /> Add New Skill</span>
                 </Link>
               </Button>
           </CardContent>
