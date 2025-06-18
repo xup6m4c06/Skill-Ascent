@@ -72,7 +72,13 @@ export function AddSkillForm({ onSubmit, defaultValues, isEditing = false, isSub
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit((values) => {
+          console.log("🟡 表單送出的值是：", values); // ← 就是這行！
+          onSubmit(values);
+          })}
+          className="space-y-6"
+        >
             <FormField
               control={form.control}
               name="name"
