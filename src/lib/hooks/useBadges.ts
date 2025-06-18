@@ -27,6 +27,13 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
       return;
     }
 
+    // Ensure db is not null before proceeding with Firestore operations
+    if (!db) {
+      setLoading(false);
+      setError("Firestore not initialized.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
     const badgesCollectionRef = collection(db, 'users', user.uid, 'badges');
@@ -64,6 +71,13 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
   }, [user]);
 
   useEffect(() => {
+    // Ensure db is not null before proceeding with Firestore operations
+    if (!db) {
+      setError("Firestore not initialized for badge updates.");
+      return;
+    }
+
+    // Original checks
     if (!user || skillsLoading || loading || badges.length === 0) {
       // Don't run if user isn't loaded, skills are loading, badges are loading, or no badges defined yet for user
       return;
