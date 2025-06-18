@@ -276,6 +276,7 @@ export default function SkillDetailPage() {
         </div>
 
         <div className="lg:col-span-2 space-y-6">
+        <Card className="shadow-xl rounded-lg border border-primary/10">
         <CardHeader>
           <CardTitle className="text-xl font-semibold text-primary flex items-center gap-2">
             <History size={22} className="text-accent" /> Practice History
@@ -345,6 +346,7 @@ export default function SkillDetailPage() {
             </div>
           )}
         </CardContent>
+        </Card>
       </div>
     </div>
   </div>
