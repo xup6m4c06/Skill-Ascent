@@ -33,6 +33,7 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
     }
 
     const fetchAndInitializeBadges = async () => {
+      try {
         if (!db) {
           setError("Firestore not initialized.");
           setLoading(false);
@@ -57,6 +58,7 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
           const fetchedBadges = querySnapshot.docs.map(docSnapshot => ({ id: docSnapshot.id, ...docSnapshot.data() } as Badge));
           setBadges(fetchedBadges.sort((a,b) => a.id.localeCompare(b.id)));
         }
+
       } catch (err) {
         console.error("Error fetching/initializing badges:", err);
         setError("Failed to load badges. Please try again.");
