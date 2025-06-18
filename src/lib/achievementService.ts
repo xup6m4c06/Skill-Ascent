@@ -54,7 +54,7 @@ export function checkAchievements(skills: Skill[], badges: Badge[]): Badge[] {
     }
 
     if (achieved) {
-      badge.achievedAt = new Date().toISOString();
+      badge.achievedAt = new Date();
     } else {
       badge.achievedAt = null;
     }

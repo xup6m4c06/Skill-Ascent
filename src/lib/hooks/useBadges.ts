@@ -7,6 +7,7 @@ import { db } from '@/lib/firebase';
 import { collection, doc, getDocs, writeBatch, query, orderBy } from 'firebase/firestore';
 import { initialBadges } from '@/data/initialData';
 import { checkAchievements } from '@/lib/achievementService';
+import { Timestamp } from 'firebase/firestore';
 
 interface UseBadgesProps {
   skills: Skill[];
@@ -102,7 +103,12 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
       
       badgesToUpdateInFirestore.forEach(badgeToUpdate => {
         const badgeDocRef = doc(safeDb, 'users', user.uid, 'badges', badgeToUpdate.id);
-        batch.update(badgeDocRef, { achievedAt: badgeToUpdate.achievedAt });
+
+        batch.update(badgeDocRef, {
+          achievedAt: badgeToUpdate.achievedAt
+          ? Timestamp.fromDate(new Date(badgeToUpdate.achievedAt))
+          : null,
+        });
       });      
 
       batch.commit()
