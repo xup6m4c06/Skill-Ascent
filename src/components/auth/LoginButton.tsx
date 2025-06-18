@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { LogIn, LogOut, User, LayoutDashboard } from 'lucide-react';
-import Link from 'next/link';
+import { LinkButton } from '@/components/ui/link-button'; // Use custom LinkButton for compatibility
 import { useRouter } from 'next/navigation';
 
 export function LoginButton() {
@@ -52,16 +52,16 @@ export function LoginButton() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link href="/">
+            <LinkButton href="/"> {/* Use LinkButton */}
                 <LayoutDashboard className="mr-2 h-4 w-4" />
                 <span>Dashboard</span>
-            </Link>
+            </LinkButton> {/* Use LinkButton */}
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/profile">
+            <LinkButton href="/profile"> {/* Use LinkButton */}
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
-            </Link>
+            </LinkButton> {/* Use LinkButton */}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleSignOut}>
@@ -75,10 +75,12 @@ export function LoginButton() {
 
   return (
     <Button asChild variant="outline" size="sm">
-      <Link href="/login">
+      <LinkButton href="/login"> {/* Use LinkButton */}
+        <span> {/* Wrap children in span */}
           <LogIn className="mr-2 h-4 w-4" />
           Login
-      </Link>
+        </span> {/* Wrap children in span */}
+      </LinkButton> {/* Use LinkButton */}
     </Button>
   );
 }
