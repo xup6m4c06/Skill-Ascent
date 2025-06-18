@@ -12,6 +12,7 @@ export const ai = genkit({
     googleAI({
       // Explicitly try GEMINI_API_KEY, then GOOGLE_API_KEY, then let Genkit try to find it.
       apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY,
+      models: ['gemini-1.5-pro-latest'],
     }),
   ],
   // Set a default model. 'gemini-1.5-flash-latest' is a common and valid choice.
