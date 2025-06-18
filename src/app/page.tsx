@@ -136,6 +136,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </section>
+
       <section>
         <h2 className="text-2xl font-semibold mb-4 text-primary flex items-center gap-2">
           <Award size={28} className="text-accent" /> Recently Achieved Badges
