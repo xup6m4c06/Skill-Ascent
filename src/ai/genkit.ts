@@ -11,5 +11,5 @@ export const ai = genkit({
       models: ['gemini-pro', 'gemini-pro-vision', 'gemini-1.5-pro'], // ✅ 額外註冊你要用的
     }),
   ],
-  model: 'gemini-1.5-pro', // ✅ 預設主模型
+  //model: 'gemini-1.5-pro', // ✅ 預設主模型
 });
