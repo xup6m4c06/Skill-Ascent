@@ -1,6 +1,7 @@
 
 'use client';
 
+import React, { useMemo } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSkills } from "@/lib/hooks/useSkills";
@@ -62,15 +63,22 @@ export default function DashboardPage() {
   }
 
   // Logged-in user dashboard content:
-  const totalPracticeTimeAllSkills = skills.reduce(
-    (total, skill) => total + getTotalPracticeTime(skill),
-    0
+  // Memoize total practice time calculation
+  const totalPracticeTimeAllSkills = useMemo(
+    () => skills.reduce(
+      (total, skill) => total + getTotalPracticeTime(skill),
+      0
+    ),
+    [skills] // Recalculate only when the 'skills' array changes
   );
 
-  const recentlyAchievedBadges = badges
+  // Memoize recently achieved badges filtering and sorting
+  const recentlyAchievedBadges = useMemo(
     .filter(b => b.achievedAt)
     .sort((a, b) => new Date(b.achievedAt!).getTime() - new Date(a.achievedAt!).getTime())
     .slice(0, 3);
+    [badges] // Recalculate only when the 'badges' array changes
+  );
 
   return (
     <div className="space-y-10">
