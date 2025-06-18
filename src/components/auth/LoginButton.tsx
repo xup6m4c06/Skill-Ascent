@@ -52,16 +52,22 @@ export function LoginButton() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <LinkButton href="/"> {/* Use LinkButton */}
+            <LinkButton href="/">
+              {/* Wrap children in a span for asChild compatibility */}
+              <span>
                 <LayoutDashboard className="mr-2 h-4 w-4" />
                 <span>Dashboard</span>
-            </LinkButton> {/* Use LinkButton */}
+              </span>
+            </LinkButton>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <LinkButton href="/profile"> {/* Use LinkButton */}
+            <LinkButton href="/profile">
+              {/* Wrap children in a span for asChild compatibility */}
+              <span>
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
-            </LinkButton> {/* Use LinkButton */}
+              </span>
+            </LinkButton>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleSignOut}>
