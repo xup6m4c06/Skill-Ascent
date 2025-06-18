@@ -66,3 +66,12 @@ if (allRequiredKeysPresent && app && !auth) {
 
 export { app, auth, db };
 
+/**
+ * Returns the Firestore database instance, or throws an error if it is not initialized.
+ */
+export function getFirestoreInstance() {
+  if (!db) {
+    throw new Error("Firestore database not initialized.");
+  }
+  return db;
+}

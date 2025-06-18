@@ -34,13 +34,15 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
       return;
     }
 
-    setLoading(true);
-    setError(null);
-    const badgesCollectionRef = collection(db, 'users', user.uid, 'badges');
-    const q = query(badgesCollectionRef, orderBy('id')); // Order by id for consistency
-
     const fetchAndInitializeBadges = async () => {
       try {
+        if (!db) {
+          setError("Firestore not initialized.");
+          setLoading(false);
+          return;
+        }
+        const badgesCollectionRef = collection(db, 'users', user.uid, 'badges');
+        const q = query(badgesCollectionRef, orderBy('id')); // Order by id for consistency
         const querySnapshot = await getDocs(q);
         if (querySnapshot.empty) {
           const batch = writeBatch(db);
@@ -71,11 +73,6 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
   }, [user]);
 
   useEffect(() => {
-    // Ensure db is not null before proceeding with Firestore operations
-    if (!db) {
-      setError("Firestore not initialized for badge updates.");
-      return;
-    }
 
     // Original checks
     if (!user || skillsLoading || loading || badges.length === 0) {
@@ -95,11 +92,18 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
     }
 
     if (badgesToUpdateInFirestore.length > 0) {
-      const batch = writeBatch(db);
+      if (!db) {
+        setError("Firestore not initialized for badge updates.");
+        return;
+      }
+      
+      const safeDb = db; // TypeScript 會知道這不是 null
+      const batch = writeBatch(safeDb);
+      
       badgesToUpdateInFirestore.forEach(badgeToUpdate => {
-        const badgeDocRef = doc(db, 'users', user.uid, 'badges', badgeToUpdate.id);
+        const badgeDocRef = doc(safeDb, 'users', user.uid, 'badges', badgeToUpdate.id);
         batch.update(badgeDocRef, { achievedAt: badgeToUpdate.achievedAt });
-      });
+      });      
 
       batch.commit()
         .then(() => {
@@ -120,7 +124,7 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
             setBadges(checkedBadges.sort((a,b) => a.id.localeCompare(b.id)));
         }
     }
-  }, [user, skills, skillsLoading, badges, loading]); // `db` is stable
+  }, [user, skills, skillsLoading, badges, loading, db]); // Added db to dependencies for safety
 
   const getBadgeById = useCallback((badgeId: string): Badge | undefined => {
     return badges.find(b => b.id === badgeId);
