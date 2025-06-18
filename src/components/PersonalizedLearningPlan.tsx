@@ -79,11 +79,8 @@ export function PersonalizedLearningPlan({ skill, onUpdateLearningGoals }: Perso
             rows={3}
             className="mb-3"
           />
-           <FormDescription className="text-xs text-muted-foreground">
-            Clearly defining your goals helps the AI provide more relevant advice. This will be saved with your skill.
-          </FormDescription>
+          <p className="text-xs text-muted-foreground">Clearly defining your goals helps the AI provide more relevant advice. This will be saved with your skill.</p>
         </div>
-
         <Button onClick={handleGenerateTips} disabled={isLoading} className="w-full">
           {isLoading ? (
             <>
