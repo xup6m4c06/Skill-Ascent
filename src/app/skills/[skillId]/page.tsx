@@ -6,7 +6,6 @@ import { useSkills } from '@/lib/hooks/useSkills';
 import { useBadges } from '@/lib/hooks/useBadges'; // Pass skills and loading state
 import { AddSkillForm, type AddSkillFormValues } from '@/components/forms/AddSkillForm';
 import { LogPracticeForm, type LogPracticeFormValues } from '@/components/forms/LogPracticeForm';
-import { PersonalizedLearningPlan } from '@/components/PersonalizedLearningPlan';
 import { BadgeDisplay } from '@/components/BadgeDisplay';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -262,7 +261,7 @@ export default function SkillDetailPage() {
                 defaultValues={editingLogEntry ? {
                   date: new Date(editingLogEntry.date),
                   duration: editingLogEntry.duration,
-                  notes: editingLogEntry.notes
+                  notes: editingLogEntry.notes ?? undefined
                 } : { date: new Date() }}
                 isEditing={!!editingLogEntry}
                 isSubmitting={isSubmitting}
@@ -277,11 +276,6 @@ export default function SkillDetailPage() {
         </div>
 
         <div className="lg:col-span-2 space-y-6">
-           <PersonalizedLearningPlan skill={skill} onUpdateLearningGoals={handleUpdateLearningGoals} />
-        </div>
-      </div>
-      
-      <Card className="shadow-xl rounded-lg border border-primary/10">
         <CardHeader>
           <CardTitle className="text-xl font-semibold text-primary flex items-center gap-2">
             <History size={22} className="text-accent" /> Practice History
@@ -351,7 +345,8 @@ export default function SkillDetailPage() {
             </div>
           )}
         </CardContent>
-      </Card>
+      </div>
     </div>
+  </div>
   );
 }
