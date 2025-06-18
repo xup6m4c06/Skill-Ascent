@@ -40,3 +40,12 @@ export const getIcon = (iconName: keyof typeof import('lucide-react')) => {
   const LucideIcons = require('lucide-react');
   return LucideIcons[iconName] || LucideIcons.HelpCircle;
 };
+
+export function getMostRecentPracticeDate(skill: Skill): string | null {
+  if (!skill.practiceLog || skill.practiceLog.length === 0) {
+    return null;
+  }
+  // Assuming practiceLog is sorted by date desc, the first entry is the most recent
+  // If not sorted, you would find the max date here.
+  return skill.practiceLog[0].date;
+}

@@ -11,7 +11,7 @@ import { SkillCard } from "@/components/SkillCard";
 import { BadgeDisplay } from "@/components/BadgeDisplay";
 import Link from "next/link";
 import { PlusCircle, TrendingUp, Award, LogIn, BookOpen, Loader2, ListChecks, BarChartBig, ShieldCheck } from "lucide-react";
-import { formatDuration, getTotalPracticeTime } from "@/lib/helpers";
+import { formatDuration, getTotalPracticeTime, getMostRecentPracticeDate } from "@/lib/helpers";
 import { useAuth } from "@/hooks/useAuth";
 import { AppLogo } from "@/components/AppLogo";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -104,6 +104,7 @@ export default function DashboardPage() {
             <CardDescription>
               Hello, {user.displayName || user.email}! Here's your current progress.
             </CardDescription>
+
           </CardHeader>
           <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
             <Card className="bg-secondary/30 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
@@ -133,6 +134,7 @@ export default function DashboardPage() {
                 <div className="text-2xl font-bold">{badges.filter(b => b.achievedAt).length}</div>
               </CardContent>
             </Card>
+
           </CardContent>
         </Card>
       </section>
@@ -160,6 +162,7 @@ export default function DashboardPage() {
           </Card>
         )}
       </section>
+
       <section>
         <h2 className="text-2xl font-semibold mb-4 text-primary flex items-center gap-2">
          <BookOpen size={28} className="text-accent" /> Your Skills
@@ -186,6 +189,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         )}
+
       </section>
     </div>
   );
