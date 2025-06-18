@@ -1,32 +1,110 @@
 'use client';
 
 import React from 'react';
+import {
+  updateProfile,
+  reauthenticateWithCredential,
+  updatePassword,
+  EmailAuthProvider,
+} from 'firebase/auth';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
+import { ProfileSettingsForm } from '@/components/settings/ProfileSettingsForm';
+import { PasswordChangeForm } from '@/components/settings/PasswordChangeForm';
 
 export default function SettingsPage() {
+  const { user } = useAuth();
+  const { toast } = useToast();
+
+  const handleProfileUpdate = async (values: { displayName: string }) => {
+    if (!user) {
+      toast({
+        title: 'Error',
+        description: 'User not authenticated.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    try {
+      await updateProfile(user, { displayName: values.displayName });
+      toast({
+        title: 'Profile Updated',
+        description: 'Your profile has been updated.',
+      });
+    } catch (error: any) {
+      console.error('Error updating profile:', error);
+      toast({
+        title: 'Error updating profile',
+        description: error.message || 'Could not update profile.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handlePasswordChange = async (values: {
+    currentPassword: string;
+    newPassword: string;
+  }) => {
+    if (!user) {
+      toast({
+        title: 'Error',
+        description: 'User not authenticated.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      const credential = EmailAuthProvider.credential(
+        user.email!,
+        values.currentPassword
+      );
+      await reauthenticateWithCredential(user, credential);
+      await updatePassword(user, values.newPassword);
+      toast({
+        title: 'Success',
+        description: 'Your password has been updated.',
+      });
+    } catch (error: any) {
+      console.error('Error changing password:', error);
+      let errorMessage = 'Could not change password.';
+      if (error.code === 'auth/wrong-password') {
+        errorMessage = 'Incorrect current password.';
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'Password is too weak.';
+      }
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-3xl font-bold mb-6">Account Settings</h1>
 
       <div className="space-y-8">
-        {/* Placeholder for Profile Information */}
+        {/* Profile Information */}
         <section className="border-b pb-6">
           <h2 className="text-2xl font-semibold mb-4">Profile Information</h2>
-          <p>Placeholder for form to edit name and other profile details.</p>
+          <ProfileSettingsForm onSubmit={handleProfileUpdate} />
         </section>
 
-        {/* Placeholder for Password Change */}
+        {/* Password Change */}
         <section className="border-b pb-6">
-          <h2 className="text-2xl font-semibold mb-4">Password Change</h2>
-          <p>Placeholder for form to change password.</p>
+          <h2 className="text-2xl font-semibold mb-4">Change Password</h2>
+          <PasswordChangeForm onSubmit={handlePasswordChange} />
         </section>
 
-        {/* Placeholder for Email Change */}
+        {/* Email Change */}
         <section className="border-b pb-6">
           <h2 className="text-2xl font-semibold mb-4">Email Change</h2>
           <p>Placeholder for form to change email address.</p>
         </section>
 
-        {/* Placeholder for Account Deletion */}
+        {/* Account Deletion */}
         <section>
           <h2 className="text-2xl font-semibold mb-4">Account Deletion</h2>
           <p>Placeholder for option to delete account.</p>
