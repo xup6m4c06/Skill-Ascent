@@ -25,20 +25,12 @@ export function useSkills() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!user) {
-      setSkills([]);
-      setLoading(false);
-      setError(null);
-      return;
-    }
+    // Initialize state based on conditions
+    setSkills([]); // Start with an empty array
+    setLoading(user && db ? true : false); // Only show loading if user and db are available
+    setError(db ? null : "Firestore is not initialized."); // Set error if db is not initialized initially
 
-    if (!db) {
-      setError("Firestore is not initialized.");
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
+    if (!user || !db) return; // Exit if user or db are not available
     setError(null);
     const skillsCollectionRef = collection(db, 'users', user.uid, 'skills');
     // Optionally, order skills by creation date or name
@@ -55,7 +47,7 @@ export function useSkills() {
           return { 
             id: docSnapshot.id, 
             ...data,
-            practiceLog: practiceLog.map(p => ({...p, date: p.date})) // Ensure date format if needed
+ practiceLog: practiceLog.map(p => ({...p, date: p.date})) // Ensure date format if needed
           } as Skill;
         });
         setSkills(fetchedSkills);
@@ -67,7 +59,7 @@ export function useSkills() {
       })
       .finally(() => {
         setLoading(false);
-      });
+ });
   }, [user]);
 
   const addSkill = useCallback(async (newSkillData: Omit<Skill, 'id' | 'createdAt' | 'practiceLog'>) => {
@@ -77,7 +69,6 @@ export function useSkills() {
     }
     if (!db) {
  setError("Firestore is not initialized.");
-      setError("User not authenticated to add skill.");
       throw new Error("User not authenticated");
     }
     setLoading(true);
@@ -108,7 +99,6 @@ export function useSkills() {
     }
     if (!db) {
  setError("Firestore is not initialized.");
-      setError("User not authenticated to update skill.");
       throw new Error("User not authenticated");
     }
     setLoading(true);
@@ -135,7 +125,6 @@ export function useSkills() {
     }
     if (!db) {
  setError("Firestore is not initialized.");
-      setError("User not authenticated to delete skill.");
       throw new Error("User not authenticated");
     }
     setLoading(true);
@@ -160,13 +149,18 @@ export function useSkills() {
     }
     if (!db) {
  setError("Firestore is not initialized.");
-      setError("User not authenticated to add practice entry.");
       throw new Error("User not authenticated");
     }
     setLoading(true);
     const skillDocRef = doc(db, 'users', user.uid, 'skills', skillId);
-    const newEntry: PracticeEntry = { ...entryData, id: uuidv4(), date: new Date(entryData.date).toISOString() };
+    const newEntry: PracticeEntry = {
+      id: uuidv4(),
+      date: new Date(entryData.date).toISOString(),
+      duration: entryData.duration,
+      notes: entryData.notes ?? null, // Explicitly set notes to null if undefined
+    };
     try {
+      console.log('Adding practice entry to Firestore:', newEntry); // Added console log
       await updateDoc(skillDocRef, {
         practiceLog: arrayUnion(newEntry),
       });
@@ -195,7 +189,6 @@ export function useSkills() {
     }
     if (!db) {
  setError("Firestore is not initialized.");
-      setError("User not authenticated to update practice entry.");
       throw new Error("User not authenticated");
     }
     setLoading(true);
@@ -230,8 +223,7 @@ export function useSkills() {
       throw new Error("User not authenticated");
     }
     if (!db) {
- setError("Firestore is not initialized.");
-      setError("User not authenticated to delete practice entry.");
+      setError("Firestore is not initialized.");
       throw new Error("User not authenticated");
     }
     setLoading(true);

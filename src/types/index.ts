@@ -4,7 +4,7 @@ export interface PracticeEntry {
   id: string;
   date: string; // ISO string
   duration: number; // in minutes
-  notes?: string;
+  notes?: string | null;
 }
 
 export interface Skill {

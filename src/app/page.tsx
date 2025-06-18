@@ -21,6 +21,24 @@ export default function DashboardPage() {
   const { skills, loading: skillsLoading, error: skillsError } = useSkills();
   const { badges, loading: badgesLoading, error: badgesError } = useBadges({ skills, skillsLoading });
 
+  // Memoize total practice time calculation
+  const totalPracticeTimeAllSkills = useMemo(
+    () => skills.reduce(
+      (total, skill) => total + getTotalPracticeTime(skill),
+      0
+    ),
+    [skills] // Recalculate only when the 'skills' array changes
+  );
+
+  // Memoize recently achieved badges filtering and sorting
+  const recentlyAchievedBadges = useMemo(
+    () => badges // Add arrow function
+ .filter((b: Badge) => b.achievedAt) // Explicitly type badge as Badge
+    .sort((a, b) => new Date(b.achievedAt!).getTime() - new Date(a.achievedAt!).getTime())
+    .slice(0, 3), // Add closing parenthesis and comma
+    [badges] // Recalculate only when the 'badges' array changes
+  );
+
   if (authLoading || (user && (skillsLoading || badgesLoading))) {
     return (
       <div className="flex justify-center items-center h-[calc(100vh-10rem)]">
@@ -64,24 +82,6 @@ export default function DashboardPage() {
   }
 
   // Logged-in user dashboard content:
-  // Memoize total practice time calculation
-  const totalPracticeTimeAllSkills = useMemo(
-    () => skills.reduce(
-      (total, skill) => total + getTotalPracticeTime(skill),
-      0
-    ),
-    [skills] // Recalculate only when the 'skills' array changes
-  );
-
-  // Memoize recently achieved badges filtering and sorting
-  const recentlyAchievedBadges = useMemo(
-    () => badges // Add arrow function
- .filter((b: Badge) => b.achievedAt) // Explicitly type badge as Badge
-    .sort((a, b) => new Date(b.achievedAt!).getTime() - new Date(a.achievedAt!).getTime())
-    .slice(0, 3), // Add closing parenthesis and comma
-    [badges] // Recalculate only when the 'badges' array changes
-  );
-
   return (
     <div className="space-y-10">
       <section>

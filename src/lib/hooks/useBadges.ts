@@ -20,23 +20,19 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Effect to fetch and initialize badges
   useEffect(() => {
-    if (!user) {
-      setBadges([]);
-      setLoading(false);
-      setError(null);
-      return;
-    }
+    setLoading(true);
+    setError(null);
+    setBadges([]); // Reset badges state
 
-    // Ensure db is not null before proceeding with Firestore operations
-    if (!db) {
+    if (!user || !db) {
       setLoading(false);
       setError("Firestore not initialized.");
       return;
     }
 
     const fetchAndInitializeBadges = async () => {
-      try {
         if (!db) {
           setError("Firestore not initialized.");
           setLoading(false);
@@ -71,15 +67,17 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
     };
 
     fetchAndInitializeBadges();
-  }, [user]);
+  }, [user, db]); // Depend on user and db
 
+  // Effect to check achievements and update badges
   useEffect(() => {
-
-    // Original checks
-    if (!user || skillsLoading || loading || badges.length === 0) {
-      // Don't run if user isn't loaded, skills are loading, badges are loading, or no badges defined yet for user
+    // Only run if user is loaded, skills are loaded, badges are loaded, and there are badges to check
+    if (!user || skillsLoading || loading || badges.length === 0 || !db) {
       return;
     }
+
+    // setLoading(true); // Avoid setting loading true here to prevent flickering when skills/badges load sequentially
+    setError(null);
 
     const currentBadgesState = badges; // Current badges from Firestore/local state
     const checkedBadges = checkAchievements(skills, [...currentBadgesState]); // Pass a copy
@@ -93,11 +91,6 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
     }
 
     if (badgesToUpdateInFirestore.length > 0) {
-      if (!db) {
-        setError("Firestore not initialized for badge updates.");
-        return;
-      }
-      
       const safeDb = db; // TypeScript 會知道這不是 null
       const batch = writeBatch(safeDb);
       
@@ -130,7 +123,7 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
             setBadges(checkedBadges.sort((a,b) => a.id.localeCompare(b.id)));
         }
     }
-  }, [user, skills, skillsLoading, badges, loading, db]); // Added db to dependencies for safety
+  }, [user, skills, skillsLoading, badges, db]); // Depend on user, skills, skillsLoading, badges, and db
 
   const getBadgeById = useCallback((badgeId: string): Badge | undefined => {
     return badges.find(b => b.id === badgeId);

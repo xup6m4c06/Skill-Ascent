@@ -40,9 +40,12 @@ interface LogPracticeFormProps {
 export function LogPracticeForm({ onSubmit, defaultValues, isEditing = false, isSubmitting = false }: LogPracticeFormProps) {
   const form = useForm<LogPracticeFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: defaultValues || {
+    defaultValues: defaultValues ? {
+      ...defaultValues,
+      // Ensure duration is 0 if it's undefined in defaultValues
+      duration: defaultValues.duration ?? 0,
+    } : {
       date: new Date(),
-      duration: undefined,
       notes: "",
     },
   });
