@@ -6,6 +6,7 @@ import { personalizedLearningTips, PersonalizedLearningTipsInput, PersonalizedLe
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
+import { FormDescription } from "@/components/ui/form"; // Import FormDescription
 import { Label } from '@/components/ui/label';
 import { Loader2, Wand2, Lightbulb, BookOpenCheck } from 'lucide-react';
 import { getTotalPracticeTime, getSkillProgressLevel } from '@/lib/helpers';
