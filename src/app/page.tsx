@@ -3,6 +3,7 @@
 
 import React, { useMemo } from 'react';
 import { Button } from "@/components/ui/button";
+import type { Badge } from '@/types'; // Import Badge type
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSkills } from "@/lib/hooks/useSkills";
 import { useBadges } from "@/lib/hooks/useBadges";
@@ -74,9 +75,10 @@ export default function DashboardPage() {
 
   // Memoize recently achieved badges filtering and sorting
   const recentlyAchievedBadges = useMemo(
-    .filter(b => b.achievedAt)
+    () => badges // Add arrow function
+ .filter((b: Badge) => b.achievedAt) // Explicitly type badge as Badge
     .sort((a, b) => new Date(b.achievedAt!).getTime() - new Date(a.achievedAt!).getTime())
-    .slice(0, 3);
+    .slice(0, 3), // Add closing parenthesis and comma
     [badges] // Recalculate only when the 'badges' array changes
   );
 
