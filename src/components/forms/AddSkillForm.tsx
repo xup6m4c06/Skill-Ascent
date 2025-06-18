@@ -24,20 +24,22 @@ const formSchema = z.object({
     .string()
     .min(2, "Skill name must be at least 2 characters.")
     .max(50, "Skill name must be at most 50 characters."),
-  targetPracticeTime: z
-    .preprocess(
-      (val) => {
-        if (val === "" || val === null) return undefined;
-        return Number(val);
-      },
-      z.number().positive("Target time must be a positive number.").optional()
-    ),
+    
+  targetPracticeTime: z.preprocess(
+    (val) => {
+      if (val === "" || val === null || val === undefined) return undefined;
+      const num = Number(val);
+      return isNaN(num) ? undefined : num;
+    },
+    z.number().positive("Target time must be a positive number.").optional()
+  ),
+
   learningGoals: z
-    .preprocess(
-      (val) => (val === "" ? undefined : val),
-      z.string().max(500, "Learning goals must be at most 500 characters.").optional()
-    ),
+    .string()
+    .max(500, "Learning goals must be at most 500 characters.")
+    .optional(),
 });
+
 
 export type AddSkillFormValues = z.infer<typeof formSchema>;
 
