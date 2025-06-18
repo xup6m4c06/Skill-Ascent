@@ -36,6 +36,7 @@ const personalizedLearningTipsPrompt = ai.definePrompt({
   name: 'personalizedLearningTipsPrompt',
   input: {schema: PersonalizedLearningTipsInputSchema},
   output: {schema: PersonalizedLearningTipsOutputSchema},
+  model: 'gemini-1.5-pro', // Specify the model here
   prompt: `You are an expert learning resource curator. A user is trying to improve their "{{skillName}}" skill.
 
   They have practiced for {{practiceTime}} minutes and their current progress level is {{progressLevel}}.
