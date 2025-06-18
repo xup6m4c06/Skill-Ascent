@@ -16,6 +16,6 @@ export const ai = genkit({
   ],
   // Set a default model. 'gemini-1.5-flash-latest' is a common and valid choice.
   // The previous 'googleai/gemini-2.0-flash' was likely incorrect.
-  model: 'gemini-1.5-pro-latest',
+  model: 'gemini-1.5-pro',
 });
 
