@@ -17,11 +17,6 @@ interface UseBadgesProps {
 export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
   const { user } = useAuth();
   const [badges, setBadges] = useState<Badge[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Effect to fetch and initialize badges
-  useEffect(() => {
     setLoading(true);
     setError(null);
     setBadges([]); // Reset badges state
@@ -59,7 +54,7 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
           setBadges(fetchedBadges.sort((a,b) => a.id.localeCompare(b.id)));
         }
 
-      } catch (err) {
+      }catch (err: any) {
         console.error("Error fetching/initializing badges:", err);
         setError("Failed to load badges. Please try again.");
         setBadges([]);
@@ -68,6 +63,11 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
       }
     };
 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Effect to fetch and initialize badges
+  useEffect(() => {
     fetchAndInitializeBadges();
   }, [user, db]); // Depend on user and db
 
