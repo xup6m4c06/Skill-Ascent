@@ -13,8 +13,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { LogIn, LogOut, User, LayoutDashboard } from 'lucide-react';
-import { LinkButton } from '@/components/ui/link-button'; // Use custom LinkButton for compatibility
+import { LinkButton } from '@/components/ui/link-button';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link'; // Import Next.js Link
 
 export function LoginButton() {
   const { user, signOut: firebaseSignOut, loading } = useAuth();
@@ -53,7 +54,6 @@ export function LoginButton() {
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <LinkButton href="/">
-              {/* Wrap children in a span for asChild compatibility */}
               <span>
                 <LayoutDashboard className="mr-2 h-4 w-4" />
                 <span>Dashboard</span>
@@ -62,7 +62,6 @@ export function LoginButton() {
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <LinkButton href="/profile">
-              {/* Wrap children in a span for asChild compatibility */}
               <span>
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
@@ -81,12 +80,10 @@ export function LoginButton() {
 
   return (
     <Button asChild variant="outline" size="sm">
-      <LinkButton href="/login"> {/* Use LinkButton */}
-        <span> {/* Wrap children in span */}
-          <LogIn className="mr-2 h-4 w-4" />
-          Login
-        </span> {/* Wrap children in span */}
-      </LinkButton> {/* Use LinkButton */}
+      <Link href="/login">
+        <LogIn className="mr-2 h-4 w-4" />
+        Login
+      </Link>
     </Button>
   );
 }
