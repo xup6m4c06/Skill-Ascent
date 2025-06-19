@@ -237,17 +237,18 @@
     --sidebar-ring: 205 38% 60%;
   }
 }
-
-/*@tailwind base;
+/*
+@tailwind base;
 @tailwind components;
-@tailwind utilities;*/
+@tailwind utilities;
 
 @layer base {
   * {
-    /*@apply border-border;*/
+    @apply border-border;
   }
   body {
-    /*@apply bg-background text-foreground;*/
-    /* font-family removed to allow Tailwind's font-sans (using Geist) to take precedence */
+    @apply bg-background text-foreground;
+    font-family removed to allow Tailwind's font-sans (using Geist) to take precedence 
   }
 }
+*/
