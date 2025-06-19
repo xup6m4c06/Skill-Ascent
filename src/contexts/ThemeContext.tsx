@@ -18,11 +18,11 @@ interface ThemeProviderProps {
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>('coffee');
 
-  useEffect(() => {
+   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
-    let initialTheme: Theme = 'coffee'; // Determine the initial theme
+    let initialTheme: Theme = 'coffee' as Theme; // Determine the initial theme
     if (savedTheme && (['light', 'dark', 'coffee', 'forest', 'ocean'] as string[]).includes(savedTheme)) {
-      initialTheme = savedTheme as Theme;
+      initialTheme = savedTheme as Theme; // Explicitly cast savedTheme to Theme after validation
     }
     setThemeState(initialTheme as Theme); // Set the state once with the determined initial theme
   }, []); // Empty dependency array ensures this runs only once on mount
