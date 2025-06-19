@@ -190,7 +190,7 @@
     --chart-5: 160 40% 50%;
   }  
 
-  .dark {
+  .theme-dark {
     /* Define dark theme colors if needed, for now keeping consistent with light theme focus */
     --background: 224 71% 4%;
     --foreground: 220 13% 95%;
