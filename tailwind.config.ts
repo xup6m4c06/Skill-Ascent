@@ -66,6 +66,24 @@ export default {
   				ring: 'hsl(var(--sidebar-ring))'
   			}
   		},
+ fontSize: {
+ 'xs': '.75rem', // default
+ 'sm': '.875rem', // default
+ 'base': '1rem', // default
+ 'lg': '1.125rem', // default
+ 'xl': '1.25rem', // default
+ '2xl': '1.5rem', // default
+ '3xl': '1.875rem', // default
+ '4xl': '2.25rem',
+ '5xl': '3rem',
+ '6xl': '4rem',
+ },
+ spacing: {
+ '0': '0', // default
+ 'px': '1px', // default
+ '0.5': '0.125rem', // default
+ // Add or override default spacing units with larger values
+ },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
