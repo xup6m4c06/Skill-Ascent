@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useTheme } from '@/contexts/ThemeContext'; // Adjust the import path if needed
+import { useTheme, type Theme } from '@/contexts/ThemeContext'; // Adjust the import path if needed
 import { Button } from '@/components/ui/button'; // Adjust the import path if needed
 
 export function ThemeChangeButton() {
@@ -12,7 +12,7 @@ export function ThemeChangeButton() {
   const cycleThemes = () => {
     const currentIndex = themes.indexOf(theme);
     const nextIndex = (currentIndex + 1) % themes.length;
-    setTheme(themes[nextIndex]);
+    setTheme(themes[nextIndex] as Theme);
   };
 
   return (

@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'; // Adjust the import path if necessary
 
+import { Theme } from '@/contexts/ThemeContext';
 export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
 
@@ -19,7 +20,7 @@ export function ThemeSwitcher() {
     <Select value={theme} onValueChange={(value) => setTheme(value)}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select Theme" />
-      </SelectTrigger>
+      </SelectTrigger> 
       <SelectContent>
         <SelectItem value="light">Light</SelectItem>
         <SelectItem value="dark">Dark</SelectItem>

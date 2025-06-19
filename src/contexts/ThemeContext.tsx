@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Theme = 'light' | 'dark' | 'coffee' | 'forest' | 'ocean';
-
+export type { Theme };
 interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
@@ -19,14 +19,12 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>('light');
 
   useEffect(() => {
-    // Read theme from localStorage on mount
-    const savedTheme = localStorage.getItem('theme') as Theme | null;
-    if (savedTheme && ['light', 'dark', 'coffee', 'forest', 'ocean'].includes(savedTheme)) {
-      setThemeState(savedTheme);
-    } else {
-      // Default to light if no valid theme is found
-      setThemeState('light');
+    const savedTheme = localStorage.getItem('theme');
+    let initialTheme: Theme = 'light'; // Determine the initial theme
+    if (savedTheme && (['light', 'dark', 'coffee', 'forest', 'ocean'] as string[]).includes(savedTheme)) {
+      initialTheme = savedTheme as Theme;
     }
+    setThemeState(initialTheme as Theme); // Set the state once with the determined initial theme
   }, []); // Empty dependency array ensures this runs only once on mount
 
   useEffect(() => {

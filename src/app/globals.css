@@ -96,48 +96,98 @@
   }  
 
   .theme-forest {
-    --background: 80 20% 90%; /* Light forest green/beige */
-    --foreground: ;
-    --card: ;
-    --card-foreground: ;
-    --popover: ;
-    --popover-foreground: ;
-    --primary: ;
-    --primary-foreground: ;
-    --secondary: ;
-    --secondary-foreground: ;
-    --muted: ;
-    --muted-foreground: ;
-    --accent: ;
-    --accent-foreground: ;
-    --destructive: ;
-    --destructive-foreground: ;
-    --border: ;
-    --input: ;
-    --ring: ;
-    --radius: ;
-    --sidebar-background: ;
-    --sidebar-foreground: ;
-    --sidebar-primary: ;
-    --sidebar-primary-foreground: ;
-    --sidebar-accent: ;
-    --sidebar-accent-foreground: ;
-    --sidebar-border: ;
-    --sidebar-ring: ;
-    --chart-1: ;
-    --chart-2: ;
-    --chart-3: ;
-    --chart-4: ;
-    --chart-5: ;
-  }
+    --background: 80 20% 90%; /* 淡森林綠/米色 */
+    --foreground: 140 20% 20%; /* 深樹幹色 */
+  
+    --card: 80 15% 95%;
+    --card-foreground: 140 20% 20%;
+  
+    --popover: 80 15% 95%;
+    --popover-foreground: 140 20% 20%;
+  
+    --primary: 130 30% 35%; /* 深樹葉綠 */
+    --primary-foreground: 140 20% 95%;
+  
+    --secondary: 100 30% 85%;
+    --secondary-foreground: 140 20% 20%;
+  
+    --muted: 90 10% 80%;
+    --muted-foreground: 90 10% 40%;
+  
+    --accent: 110 40% 55%; /* 嫩葉綠 */
+    --accent-foreground: 140 20% 95%;
+  
+    --destructive: 10 70% 40%;
+    --destructive-foreground: 0 0% 100%;
+  
+    --border: 100 10% 75%;
+    --input: 100 10% 75%;
+    --ring: 130 30% 35%;
+  
+    --radius: 0.5rem;
+  
+    --sidebar-background: 80 20% 85%;
+    --sidebar-foreground: 140 20% 20%;
+    --sidebar-primary: 130 30% 35%;
+    --sidebar-primary-foreground: 140 20% 95%;
+    --sidebar-accent: 100 30% 85%;
+    --sidebar-accent-foreground: 140 20% 30%;
+    --sidebar-border: 100 10% 75%;
+    --sidebar-ring: 130 30% 35%;
+  
+    --chart-1: 120 60% 30%;
+    --chart-2: 140 40% 40%;
+    --chart-3: 160 30% 45%;
+    --chart-4: 100 40% 55%;
+    --chart-5: 80 50% 50%;
+  }  
 
   .theme-ocean {
-    --background: ;
-    --foreground: ;
-    --card: ;
-    --card-foreground: ;
-    --accent-foreground: ;
-  }
+    --background: 210 30% 96%; /* 海霧藍灰 */
+    --foreground: 215 40% 20%;
+  
+    --card: 210 30% 98%;
+    --card-foreground: 215 40% 20%;
+  
+    --popover: 210 30% 98%;
+    --popover-foreground: 215 40% 20%;
+  
+    --primary: 205 80% 45%; /* 深海藍 */
+    --primary-foreground: 210 80% 96%;
+  
+    --secondary: 190 30% 85%; /* 淺藍灰 */
+    --secondary-foreground: 215 40% 20%;
+  
+    --muted: 210 20% 80%;
+    --muted-foreground: 210 10% 50%;
+  
+    --accent: 200 50% 60%; /* 天空藍 */
+    --accent-foreground: 210 80% 96%;
+  
+    --destructive: 5 80% 45%;
+    --destructive-foreground: 0 0% 100%;
+  
+    --border: 210 20% 85%;
+    --input: 210 20% 85%;
+    --ring: 205 80% 45%;
+  
+    --radius: 0.5rem;
+  
+    --sidebar-background: 210 30% 94%;
+    --sidebar-foreground: 215 40% 25%;
+    --sidebar-primary: 205 80% 45%;
+    --sidebar-primary-foreground: 210 80% 96%;
+    --sidebar-accent: 210 25% 85%;
+    --sidebar-accent-foreground: 205 40% 35%;
+    --sidebar-border: 210 20% 85%;
+    --sidebar-ring: 205 80% 45%;
+  
+    --chart-1: 200 80% 50%;
+    --chart-2: 190 70% 60%;
+    --chart-3: 180 60% 45%;
+    --chart-4: 170 50% 55%;
+    --chart-5: 160 40% 50%;
+  }  
 
   .dark {
     /* Define dark theme colors if needed, for now keeping consistent with light theme focus */
