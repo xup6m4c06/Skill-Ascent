@@ -18,6 +18,9 @@ import {
 // Define the shape of the form data
 interface ProfileSettingsFormValues {
   displayName: string;
+  gender: string;
+  birthday: string; // Assuming YYYY-MM-DD format
+  phoneNumber: string;
   // Add other profile fields here (e.g., bio, website, etc.)
 }
 
@@ -55,6 +58,48 @@ export const ProfileSettingsForm: React.FC<ProfileSettingsFormProps> = ({
                 <Input placeholder="Your display name" {...field} />
               </FormControl>
               {/* Add form description if needed */}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="gender"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Gender</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your gender" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="birthday"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Birthday</FormLabel>
+              <FormControl>
+                <Input type="date" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="phoneNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Phone Number</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter your phone number" {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
