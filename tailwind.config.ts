@@ -67,13 +67,13 @@ export default {
   			}
   		},
  fontSize: {
- 'xs': '1.5rem', // default
- 'sm': '1.8rem', // default
- 'base': '2rem', // default
- 'lg': '2.3rem', // default
- 'xl': '2.6rem', // default
- '2xl': '2.8rem', // default
- '3xl': '3rem', // default
+ 'xs': '1rem', // default
+ 'sm': '1.2rem', // default
+ 'base': '1.5rem', // default
+ 'lg': '1.8rem', // default
+ 'xl': '2rem', // default
+ '2xl': '2.3rem', // default
+ '3xl': '2.675rem', // default
  '4xl': '3rem',
  '5xl': '4rem',
  '6xl': '5rem',
