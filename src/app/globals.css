@@ -1,5 +1,6 @@
 @layer base {
-  :root, .theme-light {
+  /*:root, */
+  .theme-light {
     --background: 220 13% 95%; /* #F0F2F5 Light Grey */
     --foreground: 224 71% 4%; /* #0A0F1E Dark Grey/Black */
 
