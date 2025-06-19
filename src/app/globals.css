@@ -1,21 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root,
   .theme-light {
-    --background: 30 20% 95%; /* Light creamy beige */
-    --foreground: 30 25% 15%; /* Dark coffee brown */
-
+    --background: 220 13% 95%; /* #F0F2F5 Light Grey */
  --logo-color: 25 20% 30%; /* Example brown for light theme logo */
+    --achieved-badge-text: 30 20% 20%; /* Example dark brown for achieved badge text */
 
 
 
     --card: 30 20% 90%; /* Slightly darker beige */
     --card-foreground: 30 25% 15%;
   
-    --popover: 30 20% 90%;
-    --popover-foreground: 30 25% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
   
     --primary: 25 40% 40%; /* Warm medium brown */
     --primary-foreground: 30 20% 95%; /* creamy beige */
@@ -24,8 +24,8 @@
     --secondary-foreground: 30 25% 15%;
   
     --muted: 30 10% 80%;
-    --muted-foreground: 30 10% 40%;
-  
+    --muted-foreground: 220 9% 45%;
+
     --accent: 40 60% 50%; /* Muted gold/orange */
     --accent-foreground: 30 25% 10%;
   
@@ -33,8 +33,8 @@
     --destructive-foreground: 0 0% 98%;
   
     --border: 30 15% 85%;
-    --input: 30 15% 85%;
-    --ring: 25 40% 40%; /* Primary color for focus rings */
+    --input: 220 13% 88%;
+    --ring: 205 38% 60%; /* Primary color for focus rings */
   
     --radius: 0.5rem;
   
@@ -48,6 +48,8 @@
     --sidebar-border: 30 15% 80%;
     --sidebar-ring: 25 40% 40%;
 
+    --foreground: 224 71% 4%; /* Dark Grey/Black */
+
     --chart-1: 30 70% 60%;
     --chart-2: 20 80% 50%;
     --chart-3: 40 60% 40%;
@@ -57,8 +59,9 @@
 
   .theme-coffee {
     --background: 30 20% 95%; /* Light creamy beige */
+    --foreground: 30 25% 15%; /* Dark coffee brown */
     --logo-color: 30 25% 10%; /* Example very dark brown for logo */
-
+    --achieved-badge-text: 30 25% 15%; /* Example dark coffee brown for achieved badge text */
     --foreground: 30 25% 15%; /* Dark coffee brown - Example dark brown */
   
     --card: 30 20% 90%; /* Slightly darker beige */
@@ -80,7 +83,7 @@
     --accent-foreground: 30 25% 10%;
   
     --destructive: 0 84.2% 60.2%; /* Standard red for destructive actions */
-    --destructive-foreground: 0 0% 98%;
+    --destructive-foreground: 0 0% 98%; /* Standard white for destructive text */
   
     --border: 30 15% 85%;
     --input: 30 15% 85%;
@@ -108,9 +111,10 @@
   .theme-forest {
     --background: 80 20% 90%; /* 淡森林綠/米色 */
     --logo-color: 140 25% 15%; /* Example dark forest green/brown for logo */
-
     --foreground: 140 20% 20%; /* 深樹幹色 */
-  
+    --achieved-badge-text: 130 30% 25%; /* Example dark forest green for achieved badge text */
+    
+    --foreground: 140 20% 20%; /* 深樹幹色 */
     --card: 80 15% 95%;
     --card-foreground: 140 20% 20%;
   
@@ -156,9 +160,10 @@
 
   .theme-ocean {
     --background: 210 30% 96%; /* 海霧藍灰 */
-    --logo-color: 215 45% 15%; /* Example deep ocean blue/grey for logo */
-
     --foreground: 215 40% 20%;
+    --logo-color: 215 30% 18%; /* Example deep ocean blue/grey for logo - Adjusted for darker tone */
+    --achieved-badge-text: 205 80% 35%; /* Example dark ocean blue for achieved badge text */
+
   
     --card: 210 30% 98%;
     --card-foreground: 215 40% 20%;
@@ -205,8 +210,9 @@
 
   .theme-dark {
     /* Define dark theme colors if needed, for now keeping consistent with light theme focus */
-    --logo-color: 220 15% 85%; /* Example light grey for dark theme logo */
-
+    --logo-color: 30 25% 10%; /* Example very dark brown for dark theme logo */
+    --foreground: 220 13% 95%;
+    --achieved-badge-text: 220 13% 85%; /* Example light grey for achieved badge text in dark theme */
     --background: 224 71% 4%;
     --foreground: 220 13% 95%;
 
@@ -252,20 +258,3 @@
     --sidebar-ring: 205 38% 60%;
   }
 }
-
-/*
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-    font-family removed to allow Tailwind's font-sans (using Geist) to take precedence 
-  }
-}
-*/

@@ -45,12 +45,15 @@ export default {
   				DEFAULT: 'hsl(var(--destructive))',
   				foreground: 'hsl(var(--destructive-foreground))'
   			},
+      'achieved-badge-text': {
+        DEFAULT: 'hsl(var(--achieved-badge-text))',
+        80: 'hsl(var(--achieved-badge-text) / 0.8)' // Added for opacity variant
+      },
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
   			chart: {
  				'1': 'hsl(var(--chart-1))',
-  				'1': 'hsl(var(--chart-1))',
   				'2': 'hsl(var(--chart-2))',
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
