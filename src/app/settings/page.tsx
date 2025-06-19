@@ -11,6 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { ProfileSettingsForm } from '@/components/settings/ProfileSettingsForm';
 import { PasswordChangeForm } from '@/components/settings/PasswordChangeForm';
+import { ThemeChangeButton } from '@/components/ThemeChangeButton';
 
 export default function SettingsPage() {
   const { user } = useAuth();
@@ -115,3 +116,4 @@ export default function SettingsPage() {
     </div>
   );
 }
+

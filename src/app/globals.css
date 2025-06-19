@@ -1,9 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @layer base {
-  :root {
+  :root, .theme-light {
     --background: 220 13% 95%; /* #F0F2F5 Light Grey */
     --foreground: 224 71% 4%; /* #0A0F1E Dark Grey/Black */
 
@@ -49,6 +45,98 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+  }
+
+  .theme-coffee {
+    --background: 30 20% 95%; /* Light creamy beige */
+    --foreground: 30 25% 15%; /* Dark coffee brown */
+  
+    --card: 30 20% 90%; /* Slightly darker beige */
+    --card-foreground: 30 25% 15%;
+  
+    --popover: 30 20% 90%;
+    --popover-foreground: 30 25% 15%;
+  
+    --primary: 25 40% 40%; /* Warm medium brown */
+    --primary-foreground: 30 20% 98%; /* Near white */
+  
+    --secondary: 30 15% 98%; /* Lighter cream */
+    --secondary-foreground: 30 25% 15%;
+  
+    --muted: 30 10% 80%;
+    --muted-foreground: 30 10% 40%;
+  
+    --accent: 40 60% 50%; /* Muted gold/orange */
+    --accent-foreground: 30 25% 10%;
+  
+    --destructive: 0 84.2% 60.2%; /* Standard red for destructive actions */
+    --destructive-foreground: 0 0% 98%;
+  
+    --border: 30 15% 85%;
+    --input: 30 15% 85%;
+    --ring: 25 40% 40%; /* Primary color for focus rings */
+  
+    --radius: 0.5rem;
+  
+    /* Sidebar specific colors */
+    --sidebar-background: 30 20% 90%;
+    --sidebar-foreground: 30 25% 10%;
+    --sidebar-primary: 25 40% 40%;
+    --sidebar-primary-foreground: 30 20% 98%;
+    --sidebar-accent: 30 15% 95%;
+    --sidebar-accent-foreground: 25 40% 30%;
+    --sidebar-border: 30 15% 80%;
+    --sidebar-ring: 25 40% 40%;
+  
+    --chart-1: 30 70% 60%;
+    --chart-2: 20 80% 50%;
+    --chart-3: 40 60% 40%;
+    --chart-4: 10 90% 55%;
+    --chart-5: 50 50% 30%;
+  }  
+
+  .theme-forest {
+    --background: 80 20% 90%; /* Light forest green/beige */
+    --foreground: ;
+    --card: ;
+    --card-foreground: ;
+    --popover: ;
+    --popover-foreground: ;
+    --primary: ;
+    --primary-foreground: ;
+    --secondary: ;
+    --secondary-foreground: ;
+    --muted: ;
+    --muted-foreground: ;
+    --accent: ;
+    --accent-foreground: ;
+    --destructive: ;
+    --destructive-foreground: ;
+    --border: ;
+    --input: ;
+    --ring: ;
+    --radius: ;
+    --sidebar-background: ;
+    --sidebar-foreground: ;
+    --sidebar-primary: ;
+    --sidebar-primary-foreground: ;
+    --sidebar-accent: ;
+    --sidebar-accent-foreground: ;
+    --sidebar-border: ;
+    --sidebar-ring: ;
+    --chart-1: ;
+    --chart-2: ;
+    --chart-3: ;
+    --chart-4: ;
+    --chart-5: ;
+  }
+
+  .theme-ocean {
+    --background: ;
+    --foreground: ;
+    --card: ;
+    --card-foreground: ;
+    --accent-foreground: ;
   }
 
   .dark {

@@ -16,6 +16,7 @@ import { LogIn, LogOut, User, LayoutDashboard } from 'lucide-react';
 import { LinkButton } from '@/components/ui/link-button';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'; // Import Next.js Link
+import { ThemeChangeButton } from '@/components/ThemeChangeButton';
 
 export function LoginButton() {
   const { user, signOut: firebaseSignOut, loading } = useAuth();
@@ -67,6 +68,10 @@ export function LoginButton() {
                 <span>Profile</span>
               </span>
             </LinkButton>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <ThemeChangeButton />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleSignOut}>
