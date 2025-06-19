@@ -21,13 +21,15 @@ export function BadgeDisplay({ badge }: BadgeDisplayProps) {
           className={cn(badge.achievedAt ? "text-accent" : "text-muted-foreground")} 
         />}
         <h3 className={cn(
-          "font-semibold", "text-foreground"
+          "font-semibold",
+          badge.achievedAt ? "text-primary" : "text-foreground"
         )}>{badge.name}</h3>
         <p className={cn(
-          "text-xs", "text-muted-foreground"
+          "text-xs",
+          badge.achievedAt ? "text-primary/80" : "text-muted-foreground"
         )}>{badge.description}</p>
         {badge.achievedAt && (
-          <p className="text-xs text-muted-foreground/70 italic">
+          <p className="text-xs text-primary/70 italic">
             Achieved: {new Date(badge.achievedAt).toLocaleDateString()}
           </p>
         )}
