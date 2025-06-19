@@ -67,16 +67,16 @@ export default {
   			}
   		},
  fontSize: {
- 'xs': '.75rem', // default
- 'sm': '.875rem', // default
- 'base': '1rem', // default
- 'lg': '1.125rem', // default
- 'xl': '1.25rem', // default
- '2xl': '1.5rem', // default
- '3xl': '1.875rem', // default
- '4xl': '2.25rem',
- '5xl': '3rem',
- '6xl': '4rem',
+ 'xs': '1rem', // default
+ 'sm': '1.2rem', // default
+ 'base': '1.5rem', // default
+ 'lg': '1.8rem', // default
+ 'xl': '2rem', // default
+ '2xl': '2.3rem', // default
+ '3xl': '2.675rem', // default
+ '4xl': '3rem',
+ '5xl': '4rem',
+ '6xl': '5rem',
  },
  spacing: {
  '0': '0', // default
