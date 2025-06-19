@@ -51,17 +51,6 @@ export default function SettingsPage() {
           <ProfileSettingsForm onSubmit={handleProfileUpdate} />
         </section>
 
-        {/* Email Change */}
-        <section className="border-b pb-6">
-          <h2 className="text-2xl font-semibold mb-4">Email Change</h2>
-          <p>Placeholder for form to change email address.</p>
-        </section>
-
-        {/* Account Deletion */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Account Deletion</h2>
-          <p>Placeholder for option to delete account.</p>
-        </section>
     </div>
   );
 }
