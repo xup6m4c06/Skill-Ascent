@@ -20,7 +20,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
-    let initialTheme: Theme = 'light'; // Determine the initial theme
+    let initialTheme: Theme = 'coffee'; // Determine the initial theme
     if (savedTheme && (['light', 'dark', 'coffee', 'forest', 'ocean'] as string[]).includes(savedTheme)) {
       initialTheme = savedTheme as Theme;
     }
