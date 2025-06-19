@@ -28,13 +28,12 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   }, []); // Empty dependency array ensures this runs only once on mount
 
   useEffect(() => {
-    // Apply theme class to document.body
-    document.body.className = ''; // Clear existing theme classes
-    document.body.classList.add(`theme-${theme}`);
-
-    // Save theme to localStorage
+    const root = document.documentElement;
+    const themeClasses = ['theme-light', 'theme-dark', 'theme-coffee', 'theme-forest', 'theme-ocean'];
+    root.classList.remove(...themeClasses);
+    root.classList.add(`theme-${theme}`);
     localStorage.setItem('theme', theme);
-  }, [theme]); // Rerun whenever theme state changes
+  }, [theme]);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
