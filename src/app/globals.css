@@ -16,7 +16,7 @@
     --popover-foreground: 30 25% 15%;
   
     --primary: 25 40% 40%; /* Warm medium brown */
-    --primary-foreground: 30 20% 98%; /* Near white */
+    --primary-foreground: 25 25% 40%; /* Brown */
   
     --secondary: 30 15% 98%; /* Lighter cream */
     --secondary-foreground: 30 25% 15%;
@@ -27,7 +27,7 @@
     --accent: 40 60% 50%; /* Muted gold/orange */
     --accent-foreground: 30 25% 10%;
   
-    --destructive: 0 84.2% 60.2%; /* Standard red for destructive actions */
+    --destructive: 0 70% 35%; /* Standard red for destructive actions */
     --destructive-foreground: 0 0% 98%;
   
     --border: 30 15% 85%;
