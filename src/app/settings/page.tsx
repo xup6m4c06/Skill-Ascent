@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   updateProfile,
   reauthenticateWithCredential,
@@ -15,6 +15,7 @@ import { PasswordChangeForm } from '@/components/settings/PasswordChangeForm';
 export default function SettingsPage() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const [isPasswordSubmitting, setIsPasswordSubmitting] = useState(false);
 
   const handleProfileUpdate = async (values: { displayName: string }) => {
     if (!user) {
@@ -54,6 +55,7 @@ export default function SettingsPage() {
       return;
     }
 
+    setIsPasswordSubmitting(true);
     try {
       const credential = EmailAuthProvider.credential(
         user.email!,
@@ -78,6 +80,8 @@ export default function SettingsPage() {
         description: errorMessage,
         variant: 'destructive',
       });
+    } finally {
+      setIsPasswordSubmitting(false);
     }
   };
 
@@ -94,7 +98,7 @@ export default function SettingsPage() {
         {/* Password Change */}
         <section className="border-b pb-6">
           <h2 className="text-2xl font-semibold mb-4">Change Password</h2>
-          <PasswordChangeForm onSubmit={handlePasswordChange} />
+          <PasswordChangeForm onSubmit={handlePasswordChange} isSubmitting={isPasswordSubmitting} />
         </section>
 
         {/* Email Change */}

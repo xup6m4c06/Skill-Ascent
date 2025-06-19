@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { UserCircle, Settings, Mail, LogOut, Loader2, ShieldAlert } from 'lucide-react';
@@ -63,9 +64,10 @@ export default function ProfilePage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">
-                Account settings management is not yet implemented.
+              <p className="text-muted-foreground mb-2">
+                Manage your account settings on the dedicated settings page.
               </p>
+              <Link href="/settings" passHref><Button variant="outline">Go to Settings</Button></Link>
               {/* Placeholder for future settings */}
             </CardContent>
           </Card>
