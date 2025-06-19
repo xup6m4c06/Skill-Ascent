@@ -38,7 +38,7 @@ export default function RootLayout({
           <ThemeProvider>
             <SidebarProvider defaultOpen={true}>
               <Sidebar collapsible="icon" variant="sidebar" side="left">
-                <SidebarHeader className="p-4">
+                <SidebarHeader className="p-4" size="lg">
                   <AppLogo />
                 </SidebarHeader>
                 <SidebarContent>
