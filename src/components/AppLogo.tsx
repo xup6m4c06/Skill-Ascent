@@ -13,7 +13,7 @@ export function AppLogo({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
 >
       <div> {/* Wrap children in a single parent element */}
         <MountainSnow className={`${iconSize} text-accent`} />
-        <span className={`${textSize} font-semibold text-foreground`}>{APP_NAME}</span>
+        <span className={`${textSize} font-semibold text-logo-color`}>{APP_NAME}</span>
       </div>
     </Link>
   );
