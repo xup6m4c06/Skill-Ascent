@@ -96,8 +96,10 @@ export default function AnalysisPage() {
         <CardContent>
           {skillPracticeData.length > 0 ? (
             <div className="w-full h-64 flex items-center justify-center">
-              <SkillWordCloud data={skillPracticeData} />
- </div>
+              <SkillWordCloud data={skillPracticeData} 
+              fontSizeMapper={(word) => word.value * 50 + 20}
+              />
+            </div>
 
           ) : (
             <p className="text-muted-foreground text-center py-4">No practice time logged for word cloud analysis.</p>
