@@ -1,14 +1,19 @@
-
 'use client';
 import { useSkills } from '@/lib/hooks/useSkills';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3, Cloud, Loader2 } from 'lucide-react';
+import { BarChart3, Loader2 } from 'lucide-react';
 import { getTotalPracticeTime, formatDuration } from '@/lib/helpers';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
+
+// ✅ 正確用法：dynamic + default export
+const SkillWordCloud = dynamic(() => import('@/components/SkillWordCloud'), {
+  ssr: false,
+});
 
 export default function AnalysisPage() {
   const { user, loading: authLoading } = useAuth();
@@ -31,11 +36,13 @@ export default function AnalysisPage() {
       </div>
     );
   }
-  
+
   if (!user && !authLoading) {
-     return (
+    return (
       <div className="text-center py-10">
-        <p>Please <Link href="/login?redirect=/analysis" className="underline">log in</Link> to view your analysis.</p>
+        <p>
+          Please <Link href="/login?redirect=/analysis" className="underline">log in</Link> to view your analysis.
+        </p>
       </div>
     );
   }
@@ -51,69 +58,48 @@ export default function AnalysisPage() {
     );
   }
 
-  // Initialize skillPracticeData as an empty array
-  const skillPracticeData = skills
-    ? skills.map(skill => {
+  const skillPracticeData = (skills || [])
+    .map(skill => {
       const value = getTotalPracticeTime(skill);
-      // Ensure value is a number and greater than 0
       if (typeof value === 'number' && value > 0) {
         return {
           text: skill.name,
           value: value,
         };
       }
-      return null; // Return null for skills with invalid practice time
-    }).filter(skill => skill !== null) // Filter out null values
-    : []; // Provide an empty array if skills is null or undefined
-  
-  // Calculate total practice time per category
-  const practiceTimeByCategory = skillPracticeData.reduce((acc, skill) => {
-    const category = skill.category || 'Uncategorized'; // Handle skills without a category
-    acc[category] = (acc[category] || 0) + skill.value;
-    return acc;
-  }, {} as Record<string, number>);
-
-
-  console.log('Practice time by category:', practiceTimeByCategory);
+      return null;
+    })
+    .filter(skillData => skillData !== null) as Array<{ text: string; value: number }>;
 
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h1 className="text-3xl font-bold text-primary flex items-center gap-2">
-          <BarChart3 size={32} className="text-accent" /> Data Analysis
-        </h1> 
+          <BarChart3 size={32} className="text-accent" />
+          Data Analysis
+        </h1>
       </div>
 
       <Card className="shadow-lg rounded-lg">
-        <CardHeader>
-          <CardTitle>Skill Focus</CardTitle>
-          <CardDescription>A visual representation of your skills based on practice time.</CardDescription>
-        </CardHeader>
         <CardContent>
-          {/* Content for Skill Focus - Practice Time by Category */}
-          {Object.keys(practiceTimeByCategory).length > 0 ? (
-            <ul className="space-y-2">
-              {Object.entries(practiceTimeByCategory).map(([category, time]) => (
-                <li key={category} className="flex justify-between items-center p-2 bg-secondary/30 rounded-md">
-                  <span className="font-medium">{category}</span>
-                  <span className="text-primary font-semibold">{formatDuration(time)}</span>
-                </li>
-              ))}
-            </ul>
+          {skillPracticeData.length > 0 ? (
+            <div className="w-full h-64 flex items-center justify-center">
+              <SkillWordCloud data={skillPracticeData} />
+            </div>
           ) : (
-            <p className="text-muted-foreground text-center py-4">No categorized skills with practice time logged yet.</p>
+            <p className="text-muted-foreground text-center py-4">No practice time logged for word cloud analysis.</p>
           )}
         </CardContent>
       </Card>
 
-      <Card className="shadow-lg rounded-lg"> 
+      <Card className="shadow-lg rounded-lg">
         <CardHeader>
           <CardTitle>Practice Time Distribution</CardTitle>
           <CardDescription>Overview of time invested in each skill.</CardDescription>
         </CardHeader>
         <CardContent>
           {skills && skills.length > 0 ? (
-            <ul className="space-y-3 max-h-60 overflow-y-auto"> {/* Added max-height and overflow for long lists */}
+            <ul className="space-y-3 max-h-60 overflow-y-auto">
               {skills.map(skill => {
                 const time = getTotalPracticeTime(skill);
                 return (
