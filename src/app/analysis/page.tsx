@@ -97,7 +97,7 @@ export default function AnalysisPage() {
           {skillPracticeData.length > 0 ? (
             <div className="w-full h-64 flex items-center justify-center">
               <SkillWordCloud data={skillPracticeData} 
-              fontSizeMapper={(word) => word.value * 50 + 20}
+                fontSizeMapper={(word) => word.value * 20 + 20}
               />
             </div>
 
