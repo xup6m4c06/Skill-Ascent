@@ -9,7 +9,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Link from 'next/link';
-import WordCloud from 'react-d3-cloud';
 
 
 export default function AnalysisPage() {
@@ -85,8 +84,7 @@ export default function AnalysisPage() {
         </CardHeader>
         <CardContent>
  {Array.isArray(skillPracticeData) && skillPracticeData.length > 0 ? (
-            <div className="w-full h-[300px] flex justify-center items-center"> {/* Container for the word cloud - Added flex for centering */}
-              {/* @ts-expect-error */}
+            <div className="w-full h-[300px] flex justify-center items-center"> {/* Note: WordCloud component is commented out */}
               <WordCloud words={skillPracticeData as { text: string; value: number; }[]} />
             </div>
           ) : (
