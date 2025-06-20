@@ -76,7 +76,14 @@ export default function AnalysisPage() {
         <CardContent>
           {skillPracticeData.length > 0 ? (
             <div className="w-full h-[300px]"> {/* Container for the word cloud */}
-              <WordCloud words={skillPracticeData} options={{}} />
+              <WordCloud 
+                words={skillPracticeData} 
+                options={{
+                  rotations: 2, // Number of rotations for words
+                  rotationAngles: [-90, 0], // Angles to rotate words
+                  fontSizes: [10, 60], // Min and max font sizes
+                }} 
+              />
             </div>
           ) : (
             <p className="text-muted-foreground text-center py-4">Not enough skill data with practice time to generate a word cloud.</p>
