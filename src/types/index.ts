@@ -14,6 +14,7 @@ export interface Skill {
   practiceLog: PracticeEntry[];
   targetPracticeTime?: number; // in hours
   learningGoals?: string;
+  category?: string; // Optional category for skills
 }
 
 export interface Badge {

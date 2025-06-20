@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Link from 'next/link';
 
-
 export default function AnalysisPage() {
   const { user, loading: authLoading } = useAuth();
   const { skills, loading: skillsLoading, error: skillsError } = useSkills();
@@ -66,15 +65,23 @@ export default function AnalysisPage() {
       return null; // Return null for skills with invalid practice time
     }).filter(skill => skill !== null) // Filter out null values
     : []; // Provide an empty array if skills is null or undefined
+  
+  // Calculate total practice time per category
+  const practiceTimeByCategory = skillPracticeData.reduce((acc, skill) => {
+    const category = skill.category || 'Uncategorized'; // Handle skills without a category
+    acc[category] = (acc[category] || 0) + skill.value;
+    return acc;
+  }, {} as Record<string, number>);
 
-  console.log('Skill practice data for word cloud (before return):', skillPracticeData);
+
+  console.log('Practice time by category:', practiceTimeByCategory);
 
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h1 className="text-3xl font-bold text-primary flex items-center gap-2">
           <BarChart3 size={32} className="text-accent" /> Data Analysis
-        </h1>
+        </h1> 
       </div>
 
       <Card className="shadow-lg rounded-lg">
@@ -83,17 +90,23 @@ export default function AnalysisPage() {
           <CardDescription>A visual representation of your skills based on practice time.</CardDescription>
         </CardHeader>
         <CardContent>
- {Array.isArray(skillPracticeData) && skillPracticeData.length > 0 ? (
-            <div className="w-full h-[300px] flex justify-center items-center"> {/* Note: WordCloud component is commented out */}
-              <WordCloud words={skillPracticeData as { text: string; value: number; }[]} />
-            </div>
+          {/* Content for Skill Focus - Practice Time by Category */}
+          {Object.keys(practiceTimeByCategory).length > 0 ? (
+            <ul className="space-y-2">
+              {Object.entries(practiceTimeByCategory).map(([category, time]) => (
+                <li key={category} className="flex justify-between items-center p-2 bg-secondary/30 rounded-md">
+                  <span className="font-medium">{category}</span>
+                  <span className="text-primary font-semibold">{formatDuration(time)}</span>
+                </li>
+              ))}
+            </ul>
           ) : (
-            <p className="text-muted-foreground text-center py-4">Not enough skill data with practice time to generate a word cloud.</p>
+            <p className="text-muted-foreground text-center py-4">No categorized skills with practice time logged yet.</p>
           )}
         </CardContent>
       </Card>
-      
-      <Card className="shadow-lg rounded-lg">
+
+      <Card className="shadow-lg rounded-lg"> 
         <CardHeader>
           <CardTitle>Practice Time Distribution</CardTitle>
           <CardDescription>Overview of time invested in each skill.</CardDescription>
