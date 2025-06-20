@@ -74,18 +74,12 @@ export default function AnalysisPage() {
         </CardHeader>
         <CardContent>
           {skillPracticeData.length > 0 ? (
-            // Ensure skillPracticeData is an array before logging and rendering
-            Array.isArray(skillPracticeData) && (
             <div className="w-full h-[300px]"> {/* Container for the word cloud */}
-               {/* Console log right before the WordCloud component */}
-              {console.log('Skill practice data for word cloud:', skillPracticeData)}
               <WordCloud words={skillPracticeData} options={{}} />
             </div>
           ) : (
             <p className="text-muted-foreground text-center py-4">Not enough skill data with practice time to generate a word cloud.</p>
           )}
-
-
         </CardContent>
       </Card>
       
