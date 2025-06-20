@@ -58,6 +58,7 @@ export function useSkills() {
               practiceLog,
           } as Skill;
         });
+        console.log('Fetched skills:', fetchedSkills);
         setSkills(fetchedSkills);
       })
       .catch((err) => {
