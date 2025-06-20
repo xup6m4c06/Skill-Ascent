@@ -22,6 +22,12 @@ export default function EditSkillPage() {
   React.useEffect(() => {
     const fetchSkill = async () => {
       try {
+        if (!db) { // Check if db is null
+          setError('Firestore is not initialized.');
+          setLoading(false);
+          return; // Exit if db is null
+        }
+        console.log('skillId:', skillId, 'db:', db);
         const skillRef = doc(db, 'skills', skillId); // 'skills' is your collection name
         const docSnap = await getDoc(skillRef);
 
@@ -45,6 +51,11 @@ export default function EditSkillPage() {
 
   const handleSave = async (updatedSkill: Skill) => {
     try {
+      if (!db) { // Check if db is null
+        setError('Firestore is not initialized.');
+        return; // Exit if db is null
+      }
+      console.log('skillId:', skillId, 'db:', db);
       const skillRef = doc(db, 'skills', skillId);
       // Prepare data for update, excluding the id
       const { id, ...dataToUpdate } = updatedSkill;

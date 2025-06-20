@@ -46,7 +46,7 @@ export function EditSkillForm({ skill, onSave, onCancel }: EditSkillFormProps) {
     const updatedSkill: Skill = {
       ...skill,
       name: values.name,
-      category: values.category,
+      category: values.category === null ? undefined : values.category,
     };
     onSave(updatedSkill);
   }
@@ -75,7 +75,7 @@ export function EditSkillForm({ skill, onSave, onCancel }: EditSkillFormProps) {
             <FormItem>
               <FormLabel>Category</FormLabel>
               <FormControl>
-                <CategorySelect
+                <CategorySelect 
                   value={field.value || ''} // Ensure value is a string for Select component
                   onValueChange={field.onChange}
                   disabled={form.formState.isSubmitting}
