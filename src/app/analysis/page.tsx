@@ -55,10 +55,18 @@ export default function AnalysisPage() {
 
   // Initialize skillPracticeData as an empty array
   const skillPracticeData = skills
-    ? skills.map(skill => ({
-    text: skill.name,
-    value: getTotalPracticeTime(skill), // value typically represents frequency or importance
-    })).filter(skill => skill.value > 0) : []; // Provide an empty array if skills is null or undefined
+    ? skills.map(skill => {
+      const value = getTotalPracticeTime(skill);
+      // Ensure value is a number and greater than 0
+      if (typeof value === 'number' && value > 0) {
+        return {
+          text: skill.name,
+          value: value,
+        };
+      }
+      return null; // Return null for skills with invalid practice time
+    }).filter(skill => skill !== null) // Filter out null values
+    : []; // Provide an empty array if skills is null or undefined
 
   console.log('Skill practice data for word cloud (before return):', skillPracticeData);
 
