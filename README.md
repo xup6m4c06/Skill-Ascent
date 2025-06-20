@@ -21,7 +21,7 @@ cd Skill-Ascent
 
 ```bash
 git clone https://github.com/xup6m4c06/Skill-Ascent.git
-cd Skill Ascent
+cd Skill-Ascent
 ```
 
 ## 2.Install Dependencies
