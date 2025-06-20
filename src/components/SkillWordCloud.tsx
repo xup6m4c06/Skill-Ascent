@@ -15,9 +15,23 @@ export const SkillWordCloud: React.FC<SkillWordCloudProps> = ({ skillsData }) =>
   }));
 
   const options: Options = {
+    colors: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b'], // Example colors
+    deterministic: false, // Example deterministic setting
+    enableOptimizations: true, // Example optimization setting
+    enableTooltip: true, // Example tooltip setting
+    fontFamily: 'impact', // Example font family
+    fontSizes: [20, 60], // Example font size range
+    fontStyle: 'normal', // Example font style
+    fontWeight: 'normal', // Example font weight
+    padding: 1, // Example padding
     rotations: 2,
     rotationAngles: [-90, 0],
-    // Add more options as needed, e.g., colors, font sizes, etc.
+    scale: 'sqrt', // Example scale type
+          svgAttributes: {}, // Added to satisfy Options type
+          textAttributes: {}, // Added to satisfy Options type
+          transitionDuration: 1000, // Added to satisfy Options type
+    spiral: 'archimedean', // Example spiral type
+    tooltipOptions: { zIndex: 1000 }, // Example tooltip options
     // See react-wordcloud documentation for full list of options:
     // https://github.com/chrisrzhou/react-wordcloud/blob/main/README.md#options
   };

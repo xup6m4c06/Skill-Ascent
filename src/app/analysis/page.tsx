@@ -54,7 +54,7 @@ export default function AnalysisPage() {
   }
 
   const skillPracticeData = skills.map(skill => ({
-    name: skill.name,
+    text: skill.name,
     value: getTotalPracticeTime(skill), // value typically represents frequency or importance
   })).filter(skill => skill.value > 0);
 
@@ -75,7 +75,7 @@ export default function AnalysisPage() {
         <CardContent>
           {skillPracticeData.length > 0 ? (
             <div className="w-full h-[300px]"> {/* Container for the word cloud */}
-               <WordCloud words={skillPracticeData} height={300} width={500} />
+               <WordCloud words={skillPracticeData} />
             </div>
           ) : (
             <p className="text-muted-foreground text-center py-4">Not enough skill data with practice time to generate a word cloud.</p>
