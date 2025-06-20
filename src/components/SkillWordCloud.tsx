@@ -16,6 +16,7 @@ export interface SkillWordCloudProps {
   height?: number;
   style?: React.CSSProperties;
   font?: string; // Add font prop
+  fill?: (word: WordData) => string; // Add fill prop
 }
 
 const defaultFontSizeMapper = (word: WordData): number =>
@@ -34,6 +35,7 @@ const SkillWordCloud: React.FC<SkillWordCloudProps> = ({
   height = 400,
   style,
   font = 'Georgia, serif', // Add font prop with default
+  fill, // Accept fill prop
 }) => {
   if (!data || data.length === 0) {
     return (
@@ -51,6 +53,11 @@ const SkillWordCloud: React.FC<SkillWordCloudProps> = ({
         data={data}
         fontSizeMapper={fontSizeMapper}
         rotate={rotate}
+        width={width}
+        height={height}
+        style={style}
+        font={font}
+        fill={fill} // Pass fill prop
       />
     </div>
   );

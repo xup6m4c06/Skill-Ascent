@@ -15,6 +15,14 @@ const SkillWordCloud = dynamic(() => import('@/components/SkillWordCloud'), {
   ssr: false,
 });
 
+// Define a color mapping function based on word value
+const getColorByValue = (word: { text: string; value: number }): string => {
+  // We'll calculate the max practice time within the component or pass it down
+  // For now, a simple example mapping value to a shade of gray
+  const shade = Math.max(0, 200 - Math.floor(word.value * 0.5)); // Adjust multiplier for desired range
+  return `rgb(${shade}, ${shade}, ${shade})`;
+};
+
 export default function AnalysisPage() {
   const { user, loading: authLoading } = useAuth();
   const { skills, loading: skillsLoading, error: skillsError } = useSkills();
@@ -70,7 +78,7 @@ export default function AnalysisPage() {
       return null;
     })
     .filter(skillData => skillData !== null) as Array<{ text: string; value: number }>;
-
+ 
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
@@ -85,7 +93,8 @@ export default function AnalysisPage() {
           {skillPracticeData.length > 0 ? (
             <div className="w-full h-64 flex items-center justify-center">
               <SkillWordCloud data={skillPracticeData} />
-            </div>
+ </div>
+
           ) : (
             <p className="text-muted-foreground text-center py-4">No practice time logged for word cloud analysis.</p>
           )}
