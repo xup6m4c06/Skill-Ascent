@@ -58,6 +58,7 @@ export default function AnalysisPage() {
     value: getTotalPracticeTime(skill), // value typically represents frequency or importance
   })).filter(skill => skill.value > 0);
 
+  console.log('Skill practice data for word cloud (before return):', skillPracticeData);
 
   return (
     <div className="space-y-8">
@@ -108,7 +109,6 @@ export default function AnalysisPage() {
           )}
         </CardContent>
       </Card>
-
     </div>
   );
 }
