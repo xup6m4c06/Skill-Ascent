@@ -89,6 +89,10 @@ export default function AnalysisPage() {
       </div>
 
  <Card className="shadow-lg rounded-lg w-full">
+        <CardHeader>
+          <CardTitle>Skill Word Cloud</CardTitle>
+          <CardDescription>Visual representation of skills based on practice time.</CardDescription>
+        </CardHeader>
         <CardContent>
           {skillPracticeData.length > 0 ? (
             <div className="w-full h-64 flex items-center justify-center">
