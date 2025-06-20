@@ -88,7 +88,7 @@ export default function AnalysisPage() {
         </h1>
       </div>
 
-      <Card className="shadow-lg rounded-lg">
+ <Card className="shadow-lg rounded-lg w-full">
         <CardContent>
           {skillPracticeData.length > 0 ? (
             <div className="w-full h-64 flex items-center justify-center">
