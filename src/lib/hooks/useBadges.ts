@@ -60,7 +60,14 @@ export function useBadges({ skills, skillsLoading }: UseBadgesProps) {
           await batch.commit();
           fetchedBadges = userInitialBadges;
         } else {
-          fetchedBadges = querySnapshot.docs.map(docSnapshot => ({ id: docSnapshot.id, ...docSnapshot.data() } as Badge));
+          fetchedBadges = querySnapshot.docs.map(docSnapshot => {
+            const data = docSnapshot.data();
+            return {
+              id: docSnapshot.id,
+              ...data,
+              achievedAt: data.achievedAt instanceof Timestamp ? data.achievedAt.toDate() : data.achievedAt,
+            } as Badge;
+          });
         }
 
         setBadges(fetchedBadges.sort((a, b) => a.id.localeCompare(b.id)));
