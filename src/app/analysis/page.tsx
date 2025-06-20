@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Link from 'next/link';
-import WordCloud from 'react-wordcloud';
+import WordCloud from 'react-d3-cloud';
 
 
 export default function AnalysisPage() {
@@ -75,15 +75,8 @@ export default function AnalysisPage() {
         </CardHeader>
         <CardContent>
           {skillPracticeData.length > 0 ? (
-            <div className="w-full h-[300px]"> {/* Container for the word cloud */}
-              <WordCloud 
-                words={skillPracticeData} 
-                options={{
-                  rotations: 2, // Number of rotations for words
-                  rotationAngles: [-90, 0], // Angles to rotate words
-                  fontSizes: [10, 60], // Min and max font sizes
-                }} 
-              />
+            <div className="w-full h-[300px] flex justify-center items-center"> {/* Container for the word cloud - Added flex for centering */}
+              <WordCloud words={skillPracticeData} />
             </div>
           ) : (
             <p className="text-muted-foreground text-center py-4">Not enough skill data with practice time to generate a word cloud.</p>
