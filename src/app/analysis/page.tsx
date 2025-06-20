@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
-// ✅ 正確用法：dynamic + default export
+
 const SkillWordCloud = dynamic(() => import('@/components/SkillWordCloud'), {
   ssr: false,
 });
@@ -84,7 +84,7 @@ export default function AnalysisPage() {
         <CardContent>
           {skillPracticeData.length > 0 ? (
             <div className="w-full h-64 flex items-center justify-center">
-              <SkillWordCloud data={skillPracticeData} style={{ backgroundColor: 'hsl(30, 20%, 90%)' }}/>
+              <SkillWordCloud data={skillPracticeData} />
             </div>
           ) : (
             <p className="text-muted-foreground text-center py-4">No practice time logged for word cloud analysis.</p>

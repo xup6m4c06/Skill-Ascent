@@ -15,10 +15,11 @@ export interface SkillWordCloudProps {
   width?: number;
   height?: number;
   style?: React.CSSProperties;
+  font?: string; // Add font prop
 }
 
 const defaultFontSizeMapper = (word: WordData): number =>
-  word.value * 5 + 10;
+  word.value * 10 + 10;
 
 const defaultRotate = (): number =>
   Math.random() > 0.5 ? 0 : 90;
@@ -32,6 +33,7 @@ const SkillWordCloud: React.FC<SkillWordCloudProps> = ({
   width = 600,
   height = 400,
   style,
+  font = 'Georgia, serif', // Add font prop with default
 }) => {
   if (!data || data.length === 0) {
     return (
