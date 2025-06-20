@@ -20,7 +20,7 @@ export interface SkillWordCloudProps {
 }
 
 const defaultFontSizeMapper = (word: WordData): number =>
-  word.value * 10 + 50;
+  word.value * 100 + 50;
 
 const defaultRotate = (): number => 0; // Set rotation to 0 degrees
 
