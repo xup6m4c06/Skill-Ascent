@@ -78,7 +78,7 @@ export default function AnalysisPage() {
             Array.isArray(skillPracticeData) && (
             <div className="w-full h-[300px]"> {/* Container for the word cloud */}
                {/* Console log right before the WordCloud component */}
-              console.log('Skill practice data for word cloud:', skillPracticeData);
+              {console.log('Skill practice data for word cloud:', skillPracticeData)}
               <WordCloud words={skillPracticeData} options={{}} />
             </div>
           ) : (
