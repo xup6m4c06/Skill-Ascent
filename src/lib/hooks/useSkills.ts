@@ -41,13 +41,21 @@ export function useSkills() {
         const fetchedSkills = querySnapshot.docs.map(docSnapshot => {
           const data = docSnapshot.data();
           // Ensure practiceLog is an array, even if undefined in Firestore
-          const practiceLog = Array.isArray(data.practiceLog) ? data.practiceLog : [];
-          // Convert Firestore Timestamps to ISO strings if dates are stored as Timestamps
-          // For now, assuming dates are stored as ISO strings as per current types.
-          return { 
-            id: docSnapshot.id, 
-            ...data,
- practiceLog: practiceLog.map(p => ({...p, date: p.date})) // Ensure date format if needed
+            const practiceLog = Array.isArray(data.practiceLog)
+              ? data.practiceLog.map((entry: any) => ({
+                  ...entry,
+                  date: entry.date instanceof Timestamp ? entry.date.toDate().toISOString() : entry.date,
+                }))
+              : [];
+
+            // Convert Firestore Timestamp for createdAt to ISO string if it exists
+            const createdAt = data.createdAt instanceof Timestamp ? data.createdAt.toDate().toISOString() : data.createdAt;
+
+            return {
+              id: docSnapshot.id,
+              ...data,
+              createdAt,
+              practiceLog,
           } as Skill;
         });
         setSkills(fetchedSkills);
