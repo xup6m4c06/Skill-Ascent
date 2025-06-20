@@ -119,7 +119,7 @@ export default function AnalysisPage() {
                 const time = getTotalPracticeTime(skill);
                 return (
                   <li key={skill.id} className="p-3 bg-secondary/30 rounded-md">
-                    <div className="flex justify-between items-center">
+                    <div className="w-full flex justify-between items-center">
                       <span className="font-medium">{skill.name}</span>
                       <span className="text-primary font-semibold">{formatDuration(time)}</span>
                     </div>
