@@ -9,29 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Link from 'next/link';
-
-// Placeholder for Word Cloud Component
-const SkillWordCloudPlaceholder = ({ skillsData }: { skillsData: { name: string, value: number }[] }) => {
-  if (skillsData.length === 0) {
-    return <p className="text-muted-foreground">Not enough skill data to generate a word cloud.</p>;
-  }
-  return (
-    <div className="p-6 border border-dashed rounded-lg bg-muted/20 text-center">
-      <Cloud size={48} className="mx-auto text-primary mb-4" />
-      <p className="text-lg font-semibold">Skill Word Cloud</p>
-      <p className="text-sm text-muted-foreground">
-        This is where a word cloud visualizing your skills based on practice time would appear.
-      </p>
-      <div className="mt-4 space-x-2">
-        {skillsData.slice(0, 5).map(skill => (
-          <span key={skill.name} className="inline-block bg-primary/20 text-primary px-2 py-1 rounded-md text-xs">
-            {skill.name} ({formatDuration(skill.value)})
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-};
+import WordCloud from 'react-wordcloud';
 
 
 export default function AnalysisPage() {
@@ -95,7 +73,14 @@ export default function AnalysisPage() {
           <CardDescription>A visual representation of your skills based on practice time.</CardDescription>
         </CardHeader>
         <CardContent>
-          <SkillWordCloudPlaceholder skillsData={skillPracticeData} />
+          {skillPracticeData.length > 0 ? (
+            <div className="w-full h-[300px]"> {/* Container for the word cloud */}
+               <WordCloud words={skillPracticeData} height={300} width={500} />
+            </div>
+          ) : (
+            <p className="text-muted-foreground text-center py-4">Not enough skill data with practice time to generate a word cloud.</p>
+          )}
+
         </CardContent>
       </Card>
       
@@ -106,7 +91,7 @@ export default function AnalysisPage() {
         </CardHeader>
         <CardContent>
           {skills && skills.length > 0 ? (
-            <ul className="space-y-3">
+            <ul className="space-y-3 max-h-60 overflow-y-auto"> {/* Added max-height and overflow for long lists */}
               {skills.map(skill => {
                 const time = getTotalPracticeTime(skill);
                 return (

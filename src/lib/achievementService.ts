@@ -40,15 +40,13 @@ export function checkAchievements(skills: Skill[], badges: Badge[]): Badge[] {
         }
         break;
       case 'logFrequency':
-        if (badge.skillId) { // Number of logs for a specific skill
-          const targetSkill = skills.find(s => s.id === badge.skillId);
-          if (targetSkill && targetSkill.practiceLog.length >= badge.criteriaValue) {
+        // Check if any skill has a practice log length >= criteriaValue
+        for (const skill of skills) {
+          if (skill.practiceLog.length >= badge.criteriaValue) {
             achieved = true;
+            break; // Found a skill that meets the criteria, no need to check others
           }
-        } else { // Number of unique days with logs across all skills
-          if (uniquePracticeDays.size >= badge.criteriaValue) {
-            achieved = true;
-          }
+
         }
         break;
     }
