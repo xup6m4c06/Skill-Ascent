@@ -74,7 +74,7 @@ export default function AnalysisPage() {
           <CardDescription>A visual representation of your skills based on practice time.</CardDescription>
         </CardHeader>
         <CardContent>
-          {skillPracticeData.length > 0 ? (
+ {Array.isArray(skillPracticeData) && skillPracticeData.length > 0 ? (
             <div className="w-full h-[300px] flex justify-center items-center"> {/* Container for the word cloud - Added flex for centering */}
               <WordCloud words={skillPracticeData} />
             </div>
