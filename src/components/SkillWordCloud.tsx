@@ -50,7 +50,7 @@ const SkillWordCloud: React.FC<SkillWordCloudProps> = ({
     <div style={{ width, height, position: 'relative', ...style }}>
       <WordCloud
         data={data}
-        fontSizeMapper={fontSizeMapper}
+        fontSize={fontSizeMapper}
         rotate={rotate}
         width={width}
         height={height}
