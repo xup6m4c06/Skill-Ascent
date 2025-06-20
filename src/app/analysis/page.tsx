@@ -53,10 +53,12 @@ export default function AnalysisPage() {
     );
   }
 
-  const skillPracticeData = skills.map(skill => ({
+  // Initialize skillPracticeData as an empty array
+  const skillPracticeData = skills
+    ? skills.map(skill => ({
     text: skill.name,
     value: getTotalPracticeTime(skill), // value typically represents frequency or importance
-  })).filter(skill => skill.value > 0);
+    })).filter(skill => skill.value > 0) : []; // Provide an empty array if skills is null or undefined
 
   console.log('Skill practice data for word cloud (before return):', skillPracticeData);
 
@@ -76,7 +78,8 @@ export default function AnalysisPage() {
         <CardContent>
  {Array.isArray(skillPracticeData) && skillPracticeData.length > 0 ? (
             <div className="w-full h-[300px] flex justify-center items-center"> {/* Container for the word cloud - Added flex for centering */}
-              <WordCloud words={skillPracticeData} />
+              {/* @ts-expect-error */}
+              <WordCloud words={skillPracticeData as { text: string; value: number; }[]} />
             </div>
           ) : (
             <p className="text-muted-foreground text-center py-4">Not enough skill data with practice time to generate a word cloud.</p>
