@@ -14,6 +14,7 @@ export interface SkillWordCloudProps {
   rotate?: (word: WordData) => number;
   width?: number;
   height?: number;
+  style?: React.CSSProperties;
 }
 
 const defaultFontSizeMapper = (word: WordData): number =>
@@ -30,6 +31,7 @@ const SkillWordCloud: React.FC<SkillWordCloudProps> = ({
   rotate = defaultRotate,
   width = 600,
   height = 400,
+  style,
 }) => {
   if (!data || data.length === 0) {
     return (
@@ -42,23 +44,11 @@ const SkillWordCloud: React.FC<SkillWordCloudProps> = ({
   }
 
   return (
-    <div
-      style={{
-        width,
-        height,
-        position: 'relative',
-        backgroundColor: '#f9fafb',
-        border: '1px dashed #ccc',
-        borderRadius: '0.5rem',
-        padding: '1rem',
-      }}
-    >
+    <div style={{ width, height, position: 'relative', ...style }}>
       <WordCloud
         data={data}
         fontSizeMapper={fontSizeMapper}
         rotate={rotate}
-        width={width}
-        height={height}
       />
     </div>
   );
