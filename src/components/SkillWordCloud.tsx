@@ -39,7 +39,7 @@ const SkillWordCloud: React.FC<SkillWordCloudProps> = ({
   if (!data || data.length === 0) {
     return (
       <div
-        className="w-full h-64 flex items-center justify-center text-muted-foreground text-sm italic"
+        className="w-full h-[400px] flex items-center justify-center text-muted-foreground text-sm italic"
       >
         No data available to generate word cloud.
       </div>
@@ -50,7 +50,7 @@ const SkillWordCloud: React.FC<SkillWordCloudProps> = ({
     <div style={{ width, height, position: 'relative', ...style }}>
       <WordCloud
         data={data}
-        fontSize={fontSizeMapper}
+        fontSizeMapper={fontSizeMapper}
         rotate={rotate}
         width={width}
         height={height}
