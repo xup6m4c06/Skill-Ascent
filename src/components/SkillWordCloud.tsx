@@ -22,8 +22,7 @@ export interface SkillWordCloudProps {
 const defaultFontSizeMapper = (word: WordData): number =>
   word.value * 10 + 10;
 
-const defaultRotate = (): number =>
-  Math.random() > 0.5 ? 0 : 90;
+const defaultRotate = (): number => 0; // Set rotation to 0 degrees
 
 const WordCloud = WordCloudLib as React.ComponentType<any>;
 
